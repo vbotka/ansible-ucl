@@ -1,0 +1,67 @@
+---
+
+- hosts: "{{ test_ucl|default('localhost') }}"
+  gather_facts: false
+
+  vars:
+    tests_dir_local: "{{ playbook_dir }}/tests"  # at controller (localhost)
+    tests_dir: /scratch/ansible-ucl/tests        # at client(s) (remote host(s))
+    run_dir: /scratch/ansible-ucl                # at client(s) (remote host(s))
+    tmp_dir: /tmp                                # at client(s) (remote host(s))
+    uclcmd: /usr/local/bin/uclcmd                # at client(s) (remote host(s))
+    group: cmd
+
+    tests_files:
+      get.in:
+        - get_01.cmd
+        - get_02.cmd
+        - get_03.cmd
+        - get_04.cmd
+        - get_05.cmd
+        - get_06.cmd
+        - get_07.cmd
+      include-append-high.in:
+        - include-append-high_01.cmd
+      include-append-low.in:
+        - include-append-low_01.cmd
+      include-append-same.in:
+        - include-append-same_01.cmd
+      include-error.in:
+        - include-error_01.cmd
+      include-merge-high.in:
+        - include-merge-high_01.cmd
+      include-merge-low.in:
+        - include-merge-low_01.cmd
+      include-merge-same.in:
+        - include-merge-same_01.cmd
+      include-rewrite-high.in:
+        - include-rewrite-high_01.cmd
+      include-rewrite-low.in:
+        - include-rewrite-low_01.cmd
+      include-rewrite-same.in:
+        - include-rewrite-same_01.cmd
+      merge.in:
+        - merge_01.cmd
+        - merge_02.cmd
+        - merge_03.cmd
+        - merge_04.cmd
+        - merge_05.cmd
+        - merge_06.cmd
+        - merge_07.cmd
+        - merge_08.cmd
+        - merge_09.cmd
+      set.in:
+        - set_01.cmd
+        - set_02.cmd
+        - set_03.cmd
+        - set_04.cmd
+        - set_05.cmd
+        - set_06.cmd
+        - set_07.cmd
+        - set_08.cmd
+        - set_09.cmd
+        - set_10.cmd
+
+  tasks:
+
+    - import_tasks: tasks/run-test.yml

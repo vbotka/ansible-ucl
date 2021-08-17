@@ -1,0 +1,13 @@
+---
+
+- assert:
+    that: ansible_check_mode
+    fail_msg: |
+      You are running the playbook without option --check or
+      equivalent -C. This can modify the files *.in in the
+      directory tests. You will have to restore the files to prevent
+      other tests from crashing. Disable this message by setting the
+      option '-e no_check=True'.
+  when: not no_check|default(False)|bool
+
+- import_tasks: tasks/run-test.yml

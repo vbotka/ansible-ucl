@@ -1,0 +1,23 @@
+---
+
+- community.general.ucl:
+    path: "{{ tests_dir }}/get.in"
+    upath: "."
+    lang: "{{ item }}"
+  register: result
+  loop:
+    - ucl
+    - yaml
+    - json
+    - cjson
+    - msgpack
+
+- ansible.builtin.debug:
+    var: result
+  when: debug|default(false)|bool
+
+- ansible.builtin.debug:
+    msg: "{{ item.stdout }}"
+  loop: "{{ result.results }}"
+  loop_control:
+    label: "{{ item.item }}"

@@ -1,0 +1,84 @@
+---
+
+- name: Manually selected Ansible tests.
+  hosts: "{{ test_ucl|default('localhost') }}"
+  gather_facts: false
+
+  vars:
+    tests_dir_local: "{{ playbook_dir }}/tests"  # at controller (localhost)
+    tests_dir: /scratch/ansible-ucl/tests        # at client(s) (remote host(s))
+    run_dir: /scratch/ansible-ucl                # at client(s) (remote host(s))
+    uclcmd: /usr/local/bin/uclcmd                # at client(s) (remote host(s))
+    group: ansible
+
+    tests_files:
+#      get.in:
+#        - get_01.ansible
+#        - get_02.ansible
+#        - get_03.ansible
+#        - get_04.ansible
+#        - get_05.ansible
+#        - get_06.ansible
+#      include-append-high.in:
+#        - include-append-high_01.ansible
+#      include-append-low.in:
+#        - include-append-low_01.ansible
+#      include-append-same.in:
+#        - include-append-same_01.ansible
+#      include-error.in:
+#        - include-error_01.ansible
+#      include-merge-high.in:
+#        - include-merge-high_01.ansible
+#      include-merge-low.in:
+#        - include-merge-low_01.ansible
+#      include-merge-same.in:
+#        - include-merge-same_01.ansible
+#      include-rewrite-high.in:
+#        - include-rewrite-high_01.ansible
+#      include-rewrite-low.in:
+#        - include-rewrite-low_01.ansible
+#      include-rewrite-same.in:
+#        - include-rewrite-same_01.ansible
+      merge.in:
+        - merge_01.ansible
+        - merge_01_local.ansible
+        - merge_02.ansible
+        - merge_02_local.ansible
+        - merge_03.ansible
+        - merge_03_local.ansible
+#        - merge_04.ansible
+        - merge_05.ansible
+        - merge_05_local.ansible
+        - merge_06.ansible
+        - merge_06_local.ansible
+#        - merge_07.ansible
+#        - merge_08.ansible
+        - merge_09.ansible
+        - merge_09_local.ansible
+#      set.in:
+#        - set_01.ansible
+#        - set_02.ansible
+        - set_03.ansible
+        - set_03_local.ansible
+        - set_04.ansible
+        - set_04_local.ansible
+#        - set_05.ansible
+#        - set_06.ansible
+#        - set_07.ansible
+#        - set_08.ansible
+#        - set_09.ansible
+#        - set_10.ansible
+
+  tasks:
+
+    - assert:
+        that: ansible_check_mode
+        fail_msg: |
+          You are running the playbook without option --check or
+          equivalent -C. This can modify the files *.in in the
+          directory tests. You will have to restore the files to prevent
+          other tests from crashing. Disable this message by setting the
+          option '-e no_check=True'.
+      when: not no_check|default(False)|bool
+
+    - import_tasks: tasks/run-test.yml

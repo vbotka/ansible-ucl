@@ -1,0 +1,157 @@
+---
+
+- block:
+    - name: 1) Input set_03.ucl remotely by ipath
+      community.general.ucl:
+        path: "{{ tests_dir }}/set.in"
+        upath: rootkey.subkey
+        ipath: "{{ tests_dir }}/set_03.ucl"
+      register: result
+    - debug:
+        msg: "{{ msg.splitlines() }}"
+      vars:
+        msg: |-
+          {{ result|to_nice_yaml }}
+      when: debug|default(false)|bool
+  tags: ex-icontent-1
+
+- block:
+    - name: 2) Input set_03.ucl localy by icontent
+      community.general.ucl:
+        path: "{{ tests_dir }}/set.in"
+        upath: rootkey.subkey
+        icontent: "{{ lookup('file', tests_dir_local ~ '/set_03.ucl') }}"
+      register: result
+    - debug:
+        msg: "{{ msg.splitlines() }}"
+      vars:
+        msg: |-
+          {{ result|to_nice_yaml }}
+      when: debug|default(false)|bool
+  tags: ex-icontent-2
+
+- block:
+    - name: 3) Input set_04.ucl remotely by ipath
+      community.general.ucl:
+        path: "{{ tests_dir }}/set.in"
+        upath: rootkey.array
+        ipath: "{{ tests_dir }}/set_04.ucl"
+      register: result
+    - debug:
+        msg: "{{ msg.splitlines() }}"
+      vars:
+        msg: |-
+          {{ result|to_nice_yaml }}
+      when: debug|default(false)|bool
+  tags: ex-icontent-3
+
+- block:
+    - name: 4) Input set_04.ucl localy by icontent
+      community.general.ucl:
+        path: "{{ tests_dir }}/set.in"
+        upath: rootkey.array
+        icontent: "{{ lookup('file', tests_dir_local ~ '/set_04.ucl') }}"
+      register: result
+    - debug:
+        msg: "{{ msg.splitlines() }}"
+      vars:
+        msg: |-
+          {{ result|to_nice_yaml }}
+      when: debug|default(false)|bool
+  tags: ex-icontent-4
+
+- block:
+    - name: 5) Input merge_01.ucl localy by icontent
+      community.general.ucl:
+        merge: true
+        path: "{{ tests_dir }}/merge.in"
+        upath: rootkey.subkey
+        icontent: "{{ lookup('file', tests_dir_local ~ '/merge_01.ucl') }}"
+      register: result
+    - debug:
+        msg: "{{ msg.splitlines() }}"
+      vars:
+        msg: |-
+          {{ result|to_nice_yaml }}
+      when: debug|default(false)|bool
+  tags: ex-icontent-5
+
+- block:
+    - name: 6) Input merge_02.ucl localy by icontent
+      community.general.ucl:
+        merge: true
+        path: "{{ tests_dir }}/merge.in"
+        upath: rootkey.subkey
+        icontent: "{{ lookup('file', tests_dir_local ~ '/merge_02.ucl') }}"
+      register: result
+    - debug:
+        msg: "{{ msg.splitlines() }}"
+      vars:
+        msg: |-
+          {{ result|to_nice_yaml }}
+      when: debug|default(false)|bool
+  tags: ex-icontent-6
+
+- block:
+    - name: 7) Input merge_03.ucl localy by icontent
+      community.general.ucl:
+        merge: true
+        path: "{{ tests_dir }}/merge.in"
+        upath: rootkey.array
+        icontent: "{{ lookup('file', tests_dir_local ~ '/merge_03.ucl') }}"
+      register: result
+    - debug:
+        msg: "{{ msg.splitlines() }}"
+      vars:
+        msg: |-
+          {{ result|to_nice_yaml }}
+      when: debug|default(false)|bool
+  tags: ex-icontent-7
+
+- block:
+    - name: 8) Input merge_05.ucl localy by icontent
+      community.general.ucl:
+        merge: true
+        path: "{{ tests_dir }}/merge.in"
+        upath: rootkey.array
+        icontent: "{{ lookup('file', tests_dir_local ~ '/merge_05.ucl') }}"
+      register: result
+    - debug:
+        msg: "{{ msg.splitlines() }}"
+      vars:
+        msg: |-
+          {{ result|to_nice_yaml }}
+      when: debug|default(false)|bool
+  tags: ex-icontent-8
+
+- block:
+    - name: 9) Input merge_06.ucl localy by icontent
+      community.general.ucl:
+        merge: true
+        path: "{{ tests_dir }}/merge.in"
+        upath: rootkey.array
+        icontent: "{{ lookup('file', tests_dir_local ~ '/merge_06.ucl') }}"
+      register: result
+    - debug:
+        msg: "{{ msg.splitlines() }}"
+      vars:
+        msg: |-
+          {{ result|to_nice_yaml }}
+      when: debug|default(false)|bool
+  tags: ex-icontent-9
+
+- block:
+    - name: 10) Input merge_09.ucl localy by icontent
+      community.general.ucl:
+        merge: true
+        path: "{{ tests_dir }}/merge.in"
+        upath: .
+        icontent: "{{ lookup('file', tests_dir_local ~ '/merge_09.ucl') }}"
+      register: result
+    - debug:
+        msg: "{{ msg.splitlines() }}"
+      vars:
+        msg: |-
+          {{ result|to_nice_yaml }}
+      when: debug|default(false)|bool
+  tags: ex-icontent-10

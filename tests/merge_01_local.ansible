@@ -1,0 +1,7 @@
+ucl:
+  lang: ucl
+  merge: true
+  path: tests/merge.in
+  upath: 'rootkey.subkey'
+  icontent: |-
+    {{ lookup('file', tests_dir_local ~ '/merge_01.ucl') }}

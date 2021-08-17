@@ -1,0 +1,10 @@
+.*~
+*~
+.*.sw*
+hosts
+ansible.cfg
+TODO
+tests/*.in
+tests/*.cmd
+tests/*.res
+tests/*.ucl

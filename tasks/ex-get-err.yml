@@ -1,0 +1,27 @@
+---
+
+  # msg: File /etc/pkg/FreeBSD.conf; Command get executed.
+- name: No error. Get missing upath. rc=0
+  block:
+    - community.general.ucl:
+        path: /etc/pkg/FreeBSD.conf
+        upath: freebsd.foo
+      register: result
+    - debug:
+        var: result
+      when: debug|default(false)|bool
+  tags: ex-get-1-err
+
+  # stderr: Failed to find destination node: freebsd.foo.bar
+- name: Error. Set missing upath. rc=1
+  block:
+    - community.general.ucl:
+        path: /etc/pkg/FreeBSD.conf
+        upath: freebsd.foo.bar
+        value: bar
+      register: result
+      ignore_errors: true
+    - debug:
+        var: result
+      when: debug|default(false)|bool
+  tags: ex-set-1-err

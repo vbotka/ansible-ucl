@@ -1,0 +1,82 @@
+---
+
+# Find all *group* tests for the file *test_in* and create the
+# dictionary *tests_files* when *test_in* is defined and not
+# empty. When *test_in* is not defined or empty the dictionary
+# *tests_files* shall be provided by the calling play.
+#
+# Debug levels:
+#
+#   debug1 ............. List of all results
+#   debug2 ............. Intermediary results
+#   debug3 ............. Intermediary results more details
+#   debug4 ............. Details of each failed tests
+
+- name: "Find all tests for {{ test_in|default('') }} and {{ group }}"
+  block:
+    - ansible.builtin.find:
+        path: "{{ tests_dir_local }}"
+        patterns: "{{ (test_in|basename|splitext).0 }}_*.{{ group }}"
+      register: tests_ansible
+      delegate_to: localhost
+    - ansible.builtin.set_fact:
+        tests_files: "{{ {test_in|basename: tests_ansible.files|
+                                            map(attribute='path')|
+                                            map('basename')|
+                                            sort} }}"
+      when: tests_ansible.files|length > 0
+  when: test_in|default('')|length > 0
+
+- ansible.builtin.assert:
+    that: tests_files is defined
+    fail_msg: '[ERR] The dictionary *tests_files* does not exist.'
+
+- ansible.builtin.debug:
+    var: tests_files
+  when: debug2|default(false)|bool
+
+  # Run test
+
+- ansible.builtin.import_tasks: "tasks/run-test-{{ group }}.yml"
+
+  # Display results
+
+- ansible.builtin.debug:
+    var: tests_diff
+  when: debug2|default(false)|bool
+
+- ansible.builtin.debug:
+    msg: "{{ msg.split('\n') }}"
+  loop: "{{ tests_diff.results }}"
+  loop_control:
+    label: "{{ item.item.item.key }}"
+  vars:
+    msg: |-
+      = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+      [ERR] {{ item.item.item.key }}
+      - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      {{ item.item.invocation.module_args|to_nice_yaml }}
+      - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      {{ item.invocation.module_args._raw_params }}
+      - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      {{ item.stdout }}
+      - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  when:
+    - debug4|default(false)|bool
+    - item.rc != 0
+
+- ansible.builtin.debug:
+    msg: |-
+      {% for i in tests_diff.results %}
+      {% if i.rc == 0 %}[OK] {% else %}[ERR]{% endif %} {{ i.rc }} {{ i.item.item.key|basename }}
+      {% endfor %}
+  when: debug1|default(false)|bool
+
+- ansible.builtin.assert:
+    that: failed_tests|int == 0
+    fail_msg: '[ERR] *** {{ failed_tests }} Test(s) Failed. ***'
+    success_msg: '[OK]  *** All Tests Passed. ***'
+  vars:
+    failed_tests: "{{ tests_diff.results|selectattr('rc', 'ne', 0)|list|length }}"
+
+...

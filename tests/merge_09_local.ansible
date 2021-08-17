@@ -1,0 +1,6 @@
+ucl:
+  lang: ucl
+  merge: true
+  path: tests/merge.in
+  upath: '.'
+  icontent: "{{ lookup('file', tests_dir_local ~ '/merge_09.ucl') }}"

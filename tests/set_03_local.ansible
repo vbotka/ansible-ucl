@@ -1,0 +1,5 @@
+ucl:
+  lang: ucl
+  upath: 'rootkey.subkey'
+  icontent: |-
+    {{ lookup('file', tests_dir_local ~ '/set_03.ucl') }}

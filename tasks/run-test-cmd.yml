@@ -1,0 +1,65 @@
+---
+
+# Create dictionary that will control the tests
+
+- ansible.builtin.set_fact:
+    _tests: {}
+
+- name: Create dictionary _tests
+  ansible.builtin.set_fact:
+    _tests: "{{ _tests|combine({_test: {'cmd': _cmd,
+                                        'dif': _dif,
+                                        'tmp': _tmp,
+                                        'res': _res}}) }}"
+  with_subelements:
+    - "{{ tests_files|dict2items }}"
+    - value
+  vars:
+    _test: "{{ item.1 }}"
+    _test_path: "{{ tests_dir}}/{{ item.1 }}"
+    _in: "{{ tests_dir ~ '/' ~ item.0.key }}"  
+    _tmp: "{{ tmp_dir }}/{{ (item.1|splitext).0 }}.tmp"
+    _cmd: "cat {{ _in }} | {{ uclcmd }} $(cat {{ _test_path }}) > {{ _tmp }}"
+    _res: "{{ tests_dir }}/{{ (item.1|splitext).0 }}.res"
+    _dif: "{{ 'diff -B ' ~ _res ~ ' ' ~ _tmp }}"
+
+- ansible.builtin.debug:
+    var: _tests
+  when: debug2|default(false)|bool
+
+# Run the tests and optionally display the results
+
+- block:
+    - name: Run command uclcmd
+      ansible.builtin.shell:
+        cmd: "{{ item.value.cmd }}"
+        chdir: "{{ run_dir }}"
+      register: tests_res
+      check_mode: false
+      loop: "{{ _tests|dict2items }}"
+      loop_control:
+        label: "{{ item.key }}"
+  rescue:
+    - ansible.builtin.debug:
+        msg: "[ERR] Some of the tests failed. See debug for details."
+    - ansible.builtin.debug:
+        msg: "{{ ansible_failed_result.results|selectattr('rc', 'ne', 0)|list }}"
+      when: debug2|default(false)|bool
+
+- ansible.builtin.debug:
+    var: tests_res
+  when: debug3|default(false)|bool
+
+  # Compare results
+
+- name: Diff results
+  ansible.builtin.shell:
+    cmd: "{{ item.item.value.dif }}"
+  register: tests_diff
+  check_mode: false
+  loop: "{{ tests_res.results }}"
+  loop_control:
+    label: "{{ item.item.key }}"
+  changed_when: false
+  ignore_errors: true
+...

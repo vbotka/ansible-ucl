@@ -1,0 +1,59 @@
+---
+
+- block:
+    - community.general.ucl:
+        path: /etc/ssh/sshd_config
+        owner: root
+        group: wheel
+        mode: '0644'
+        upath: X11Forwarding
+        value: 'no'
+        lang: json
+        validate: 'sshd -t -f %s'
+      register: result
+    - ansible.builtin.debug:
+        msg: "{{ msg.splitlines() }}"
+      vars:
+        msg: |-
+          {{ result|to_nice_yaml }}
+      when: debug|default(false)|bool
+  tags: ex-val-1
+
+# shell> ansible-playbook run_tests.yml -t ex-val-2 -e debug=true
+# message: Content changed. Validated. Temporary file moved to path.
+
+- block:
+    - community.general.ucl:
+        path: /etc/pkg/FreeBSD.conf
+        owner: root
+        group: wheel
+        mode: '0644'
+        upath: freebsd.enabled
+        value: 'false'
+        validate: 'pkg -C %s stat'
+      register: result
+    - ansible.builtin.debug:
+        msg: "{{ msg.splitlines() }}"
+      vars:
+        msg: |-
+          {{ result|to_nice_yaml }}
+      when: debug|default(false)|bool
+  tags: ex-val-2
+
+- block:
+    - community.general.ucl:
+        path: /etc/pkg/FreeBSD.conf
+        owner: root
+        group: wheel
+        mode: '0644'
+        upath: freebsd.enabled
+        value: 'true'
+        validate: 'pkg -C %s stat'
+      register: result
+    - ansible.builtin.debug:
+        msg: "{{ msg.splitlines() }}"
+      vars:
+        msg: |-
+          {{ result|to_nice_yaml }}
+      when: debug|default(false)|bool
+  tags: ex-val-3

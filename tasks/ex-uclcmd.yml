@@ -1,0 +1,31 @@
+---
+
+# NOTE: Copy *uclcmd* to *uclcmd-v2* to test the option *executable*
+# or env *ANSIBLE_UCLCMD*
+
+- name: Examples. ANSIBLE_UCLCMD
+  block:
+    - name: Get upath.
+      community.general.ucl:
+        path: /etc/pkg/FreeBSD.conf
+        upath: freebsd.url
+      register: result
+      environment:
+        ANSIBLE_UCLCMD: /usr/local/bin/uclcmd-v2
+    - ansible.builtin.debug:
+        var: result
+      when: debug|default(false)|bool
+  tags: ex-uclcmd-1
+
+- name: Examples. ANSIBLE_UCLCMD
+  block:
+    - name: Get upath.
+      community.general.ucl:
+        path: /etc/pkg/FreeBSD.conf
+        upath: freebsd.url
+        executable: /usr/local/bin/uclcmd-v2
+      register: result
+    - ansible.builtin.debug:
+        var: result
+      when: debug|default(false)|bool
+  tags: ex-uclcmd-2
