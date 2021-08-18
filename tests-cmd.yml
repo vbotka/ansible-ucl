@@ -4,11 +4,6 @@
   gather_facts: false
 
   vars:
-    tests_dir_local: "{{ playbook_dir }}/tests"  # at controller (localhost)
-    tests_dir: /scratch/ansible-ucl/tests        # at client(s) (remote host(s))
-    run_dir: /scratch/ansible-ucl                # at client(s) (remote host(s))
-    tmp_dir: /tmp                                # at client(s) (remote host(s))
-    uclcmd: /usr/local/bin/uclcmd                # at client(s) (remote host(s))
     group: cmd
 
     tests_files:

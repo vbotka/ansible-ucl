@@ -1,14 +1,13 @@
 ---
 
+# Example
+# shell> ansible-playbook tests-ucl-devel.yml -e 'debug1=true test_ucl=test_ucl' -CD
+
 - name: Manually selected Ansible tests.
   hosts: "{{ test_ucl|default('localhost') }}"
   gather_facts: false
 
   vars:
-    tests_dir_local: "{{ playbook_dir }}/tests"  # at controller (localhost)
-    tests_dir: /scratch/ansible-ucl/tests        # at client(s) (remote host(s))
-    run_dir: /scratch/ansible-ucl                # at client(s) (remote host(s))
-    uclcmd: /usr/local/bin/uclcmd                # at client(s) (remote host(s))
     group: ansible
 
     tests_files:

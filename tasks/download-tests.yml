@@ -1,0 +1,61 @@
+---
+- block:
+
+    - name: "Create dirs at localhost"
+      ansible.builtin.file:
+        state: directory
+        path: "{{ item }}"
+      loop:
+        - "{{ playbook_dir }}/uclcmd"
+        - "{{ playbook_dir }}/tests"
+      delegate_to: localhost
+
+    - name: "Create dirs at {{ inventory_hostname }}"
+      ansible.builtin.file:
+        state: directory
+        path: "{{ item }}"
+      loop:
+        - "{{ run_dir }}"
+        - "{{ tests_dir }}"
+
+    - name: "Clone {{ uclcmd_git }} at localhost"
+      ansible.builtin.git:
+        repo: "{{ uclcmd_git }}"
+        dest: "{{ playbook_dir }}/uclcmd"
+      register: result
+      delegate_to: localhost
+    - debug:
+        var: result
+      when: debug|default(false)|bool
+
+    - name: "Sync tests to localhost:{{ playbook_dir }}/tests"
+      ansible.builtin.command: "rsync -rci {{ item }} {{ playbook_dir }}/tests"
+      loop:
+        - "{{ playbook_dir }}/uclcmd/tests/"
+        - "{{ playbook_dir }}/tests.ansible/"
+      register: result
+      delegate_to: localhost
+      changed_when: result.stdout_lines|length > 0
+    - debug:
+        var: result
+      when: debug|default(false)|bool
+
+    - name: "Sync {{ playbook_dir }}/uclcmd/tests/ to {{ inventory_hostname }}:{{ tests_dir }}"
+      ansible.posix.synchronize:
+        archive: false
+        rsync_opts:
+          - --recursive
+          - --checksum
+        src: "{{ item }}"
+        dest: "{{ tests_dir }}"
+      loop:
+        - "{{ playbook_dir }}/uclcmd/tests/"
+        - "{{ playbook_dir }}/tests.ansible/"
+      register: result
+    - debug:
+        var: result
+      when: debug|default(false)|bool
+
+    - meta: end_play
+
+  when: download_tests|default(false)|bool

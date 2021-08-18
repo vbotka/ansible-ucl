@@ -1,6 +1,7 @@
 ---
 
-# Example
+# Best practice
+# shell> ansible-playbook run-tests.yml -e 'test_ucl=test_ucl download_tests=true debug=true'
 # shell> ansible-playbook run-tests.yml -e 'test_ucl=test_ucl debug=true' -t ex-set -CD
 
 - name: Collection of tests.
@@ -9,25 +10,19 @@
 
   vars:
 
-    tests_dir_local: "{{ playbook_dir }}/tests"  # at controller (localhost)
-    tests_dir: /scratch/ansible-ucl/tests        # at client(s) (remote host(s))
-    run_dir: /scratch/ansible-ucl                # at client(s) (remote host(s))
-    uclcmd: /usr/local/bin/uclcmd                # at client(s) (remote host(s))
-    tmp_dir: /tmp                                # at client(s) (remote host(s))
-
     group: |-
       {% if 'tests-module' in ansible_run_tags %}ansible
       {%- elif 'tests-command' in ansible_run_tags %}cmd
       {%- else %}undefined
       {%- endif %}
 
-    # patterns: '*.in'
-    # patterns: 'get.in'
-    # patterns: 'set.in'
-    # patterns: 'merge.in'
-    # patterns: 'include-*.in'
-
   tasks:
+
+    # Download tests and exit - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    - ansible.builtin.import_tasks: tasks/download-tests.yml
+
+    # Sanity - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     - ansible.builtin.assert:
         that: ansible_run_tags|difference(['all'])|length > 0
@@ -45,7 +40,7 @@
           prevent other tests from crashing. Disable this message by
           setting the option '-e no_check=True'.
       when:
-        - not no_check|default(False)|bool
+        - not no_check|default(false)|bool
         - group != 'cmd'
       tags: always
 

@@ -1,0 +1,13 @@
+---
+tests_dir_local: "{{ playbook_dir }}/tests"          # at controller (localhost)
+run_dir: /scratch/ansible-ucl                        # at client(s) (remote host(s))
+tests_dir: "{{ run_dir }}/tests"                     # at client(s) (remote host(s))
+uclcmd: /usr/local/bin/uclcmd                        # at client(s) (remote host(s))
+tmp_dir: /tmp                                        # at client(s) (remote host(s))
+uclcmd_git: https://github.com/allanjude/uclcmd.git
+
+# patterns: '*.in'
+# patterns: 'get.in'
+# patterns: 'set.in'
+# patterns: 'merge.in'
+# patterns: 'include-*.in'

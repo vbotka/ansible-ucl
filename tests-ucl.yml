@@ -5,7 +5,7 @@
   # shell> ANSIBLE_STDOUT_CALLBACK=yaml \
   # ANSIBLE_DISPLAY_SKIPPED_HOSTS=false \
   # ANSIBLE_DISPLAY_OK_HOSTS=false \
-  # ansible-playbook tests-ansible.yml -e debug1=true -e test_ucl=test_ucl -C
+  # ansible-playbook tests-ucl.yml -e 'debug1=true test_ucl=test_ucl' -CD
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 - name: All Ansible tests. Known problems disabled.
@@ -13,10 +13,6 @@
   gather_facts: false
 
   vars:
-    tests_dir_local: "{{ playbook_dir }}/tests"  # at controller (localhost)
-    tests_dir: /scratch/ansible-ucl/tests        # at client(s) (remote host(s))
-    run_dir: /scratch/ansible-ucl                # at client(s) (remote host(s))
-    uclcmd: /usr/local/bin/uclcmd                # at client(s) (remote host(s))
     group: ansible
 
     tests_files:

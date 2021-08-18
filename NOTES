@@ -91,7 +91,7 @@ The option -D is optional. If used you'll see unified diffs of
 the before/after data on the fly.
 
   shell> pwd
-  /scratch/vbotka.ansible-ucl
+  /scratch/ansible-ucl
 
   shell> ansible-playbook run-tests.yml -t tests-module -e 'patterns=get.in debug1=true test_ucl=test_ucl' -C
   ...
@@ -192,6 +192,7 @@ Errors
 +       key = "new";
 +   }
 
+
 Test uclcmd command
 -------------------
 
@@ -279,50 +280,45 @@ See available tags. There are other examples tagged ex-*.
        test-set-8, test-set-9, tests-command, tests-module,
        tests-module-include, tests-module-merge, tests-module-set]
 
+
 Troubleshooting
 ===============
 
 * Turn on debugging output, e.g.
 
-  shell> ansible-playbook run-tests.yml -t tests-module -e patterns=get.in -e debug=true
+  shell> ANSIBLE_DEBUG=true ansible-playbook run-tests.yml -t tests-module -e 'patterns=get.in debug1=true test_ucl=test_ucl' -CD
 
-* Make sure the data tests/*.in hasn't been changed. (git status)
+* Make sure the data int the directory *tests* hasn't been changed. Refresh it
+
+  shell> ansible-playbook run-tests.yml -e 'test_ucl=test_ucl download_tests=true debug=true'
 
 
-Setup required at the client (remote host)
-==========================================
+Client setup (remote host)
+==========================
 
-* uclcmd
+* Install devel/uclcmd
 
-* Ansible standard ssh connectivity
+* Ansible ssh connectivity
 
   shell> ssh asadmin@10.1.0.17 which uclcmd
   /usr/local/bin/uclcmd
 
-* Clean master branch of the uclcmd repo or any fork which provides
-  *tests*
+* Create the local copy of the *tests*
 
-  shell> ssh asadmin@10.1.0.17 "cd /scratch/uclcmd; git remote -v; git status"
-  origin			https://github.com/vbotka/ansible-ucl (fetch)
-  origin			https://github.com/vbotka/ansible-ucl (push)
-  On branch master
-  Your branch is up to date with 'origin/master'.
-
-  nothing to commit, working tree clean
+  shell> ansible-playbook run-tests.yml -e 'test_ucl=test_ucl download_tests=true debug=true'
 
 
-Test setup required at the controller (localhost)
-=================================================
+Controller setup (localhost)
+============================
+
 
 Install Ansible
 ---------------
 <TBD>
 
 
-Clone vbotka.ansible-ucl
-------------------------
-Clone the repository and set upstream.
-
+Clone ansible-ucl
+-----------------
 shell> pwd
 /scratch
 
@@ -330,6 +326,22 @@ shell> git clone https://github.com/vbotka/ansible-ucl.git
 
 shell> cd ansible-ucl
 shell> git remote -v
+origin https://github.com/vbotka/ansible-ucl.git (fetch)
+origin https://github.com/vbotka/ansible-ucl.git (push)
+
+
+Install requirements
+--------------------
+
+shell> pwd
+/scratch/ansible-ucl
+shell> ansible-galaxy collection install -r requirements.yml
+
+
+Create the local copy of the *tests*
+-----------------------------------
+
+shell> ansible-playbook run-tests.yml -e 'test_ucl=test_ucl download_tests=true debug=true'
 
 
 Clone vbotka.ansible.community.general
@@ -354,10 +366,11 @@ Copy module ucl.py to community.general
 ---------------------------------------
 <TBD>
 
+
 Configure Ansible path to modules, utils, and filters
 -----------------------------------------------------
 shell> pwd
-/scratch/vbotka.ansible-ucl
+/scratch/ansible-ucl
 
 shell> grep community.general ansible.cfg
 library = /scratch/dev/ansible/collections/ansible_collections/community/general/plugins/modules/:$PWD/library:/usr/share/ansible/plugins/modules
@@ -366,7 +379,7 @@ library = /scratch/dev/ansible/collections/ansible_collections/community/general
 Fit Ansible inventory and test connection
 -----------------------------------------
 shell> pwd
-/scratch/vbotka.ansible-ucl
+/scratch/ansible-ucl
 
 shell> cat hosts
 host1 ansible_hostname=10.1.0.17
@@ -395,7 +408,7 @@ Update variables of the playbook to your setting
 Test syntax of the playbook
 ---------------------------
 shell> pwd
-/scratch/vbotka.ansible-uclcmd
+/scratch/ansible-ucl
 
 shell> ansible-playbook run-tests.yml --syntax-check
 
