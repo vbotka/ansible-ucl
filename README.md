@@ -8,13 +8,12 @@ Home on https://github.com/vbotka/ansible-ucl
 
 INSTALL
 -------
-<TBD>
+(TBD) See NOTES.
 
 
 TEST
 ----
-<TBD>
-See NOTES.
+(TBD) See NOTES.
 
 
 REQUIREMENTS
