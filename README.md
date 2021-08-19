@@ -48,7 +48,8 @@ Example
 
 The option *path* is required. Without other options the module
 returns the content of the file in
-[UCL](https://wiki.freebsd.org/UniversalConfigurationLanguage) format
+[UCL](https://wiki.freebsd.org/UniversalConfigurationLanguage)
+format. For example the play below
 
 ```yaml
 shell> cat playbook.yml
@@ -60,6 +61,8 @@ shell> cat playbook.yml
     - debug:
         var: result
 ```
+
+gives
 
 ```yaml
 shell> ansible-playbook ucl.yml
