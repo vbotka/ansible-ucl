@@ -161,23 +161,23 @@ author: "Vladimir Botka (@vbotka)"
 
 EXAMPLES = r'''
 - name: Get FreeBSD repository of packages
-  community.general.ucl:
+  ucl:
     path: /etc/pkg/FreeBSD.conf
     upath: freebsd.url
 
 - name: Get configuration of packages in YAML format
-  community.general.ucl:
+  ucl:
     path: /etc/pkg/FreeBSD.conf
     lang: yaml
 
 - name: Set repo with latest versions of packages
-  community.general.ucl:
+  ucl:
     path: /etc/pkg/FreeBSD.conf
     upath: freebsd.url
     value: "pkg+http://pkg.FreeBSD.org/${ABI}/latest"
 
 - name: Merge new value to upath in path. Set executable.
-  community.general.ucl:
+  ucl:
     path: /foo/bar.conf
     upath: rootkey.subkey.key
     value: newvalue
@@ -186,7 +186,7 @@ EXAMPLES = r'''
 
 - name: Merge new value to upath in path. Set executable by
         environment on remote node.
-  community.general.ucl:
+  ucl:
     path: /foo/bar.conf
     upath: rootkey.subkey.key
     value: newvalue
@@ -195,21 +195,21 @@ EXAMPLES = r'''
     ANSIBLE_UCLCMD: /usr/local/bin/uclcmd
 
 - name: Merge value from the UCL file on remote node to upath in path
-  community.general.ucl:
+  ucl:
     path: /foo/bar.conf
     upath: rootkey.subkey.key
     ipath: merge.ucl
     merge: yes
 
 - name: Merge value from the UCL file on controller to upath in path
-  community.general.ucl:
+  ucl:
     path: /foo/bar.conf
     upath: rootkey.subkey.key
     icontent: "{{ lookup('file', 'merge.ucl') }}"
     merge: yes
 
 - name: Remove upath rootkey.subkey.key from path
-  community.general.ucl:
+  ucl:
     path: /foo/bar.conf
     upath: rootkey.subkey.key
     state: absent

@@ -6,7 +6,7 @@
 - name: Examples. ANSIBLE_UCLCMD
   block:
     - name: Get upath.
-      community.general.ucl:
+      ucl:
         path: /etc/pkg/FreeBSD.conf
         upath: freebsd.url
       register: result
@@ -20,7 +20,7 @@
 - name: Examples. ANSIBLE_UCLCMD
   block:
     - name: Get upath.
-      community.general.ucl:
+      ucl:
         path: /etc/pkg/FreeBSD.conf
         upath: freebsd.url
         executable: /usr/local/bin/uclcmd-v2

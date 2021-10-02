@@ -1,7 +1,7 @@
 ---
 
 - block:
-    - community.general.ucl:
+    - ucl:
         path: /etc/ssh/sshd_config
         owner: root
         group: wheel
@@ -23,7 +23,7 @@
 # message: Content changed. Validated. Temporary file moved to path.
 
 - block:
-    - community.general.ucl:
+    - ucl:
         path: /etc/pkg/FreeBSD.conf
         owner: root
         group: wheel
@@ -41,7 +41,7 @@
   tags: ex-val-2
 
 - block:
-    - community.general.ucl:
+    - ucl:
         path: /etc/pkg/FreeBSD.conf
         owner: root
         group: wheel

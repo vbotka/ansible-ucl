@@ -27,7 +27,7 @@
 
 - block:
     - name: Run module ucl
-      community.general.ucl:
+      ucl:
         executable: "{{ uclcmd }}"
         path: "{{ item.value.in }}"
         backup: "{{ item.value.mod.ucl.backup|default(omit) }}"

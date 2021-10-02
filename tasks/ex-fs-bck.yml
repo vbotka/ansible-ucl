@@ -3,7 +3,7 @@
 - name: Examples. Set value. Set fs. Backup. All test in sequence restore the origin.
   block:
     - name: Set group writable
-      community.general.ucl:
+      ucl:
         path: /etc/pkg/FreeBSD.conf
         owner: root
         group: wheel
@@ -16,7 +16,7 @@
   tags: ex-get-fs-1
 
 - block:
-    - community.general.ucl:
+    - ucl:
         path: /etc/pkg/FreeBSD.conf
         owner: admin
         group: wheel
@@ -29,7 +29,7 @@
   tags: ex-get-fs-2
 
 - block:
-    - community.general.ucl:
+    - ucl:
         path: /etc/pkg/FreeBSD.conf
         upath: freebsd.foo
       register: result
@@ -39,7 +39,7 @@
   tags: ex-get-fs-3
 
 - block:
-    - community.general.ucl:
+    - ucl:
         path: /etc/pkg/FreeBSD.conf
         owner: admin
         group: wheel
@@ -54,7 +54,7 @@
   tags: ex-set-fs-bck-1
 
 - block:
-    - community.general.ucl:
+    - ucl:
         path: /etc/pkg/FreeBSD.conf
         owner: root
         group: wheel
@@ -69,7 +69,7 @@
   tags: ex-rm-fs-bck-1
 
 - block:
-    - community.general.ucl:
+    - ucl:
         path: /etc/pkg/FreeBSD.conf
         owner: root
         group: wheel
@@ -84,7 +84,7 @@
   tags: ex-rm-fs-bck-2
 
 - block:
-    - community.general.ucl:
+    - ucl:
         path: /etc/pkg/FreeBSD.conf
         owner: root
         group: wheel

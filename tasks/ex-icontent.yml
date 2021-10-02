@@ -2,7 +2,7 @@
 
 - block:
     - name: 1) Input set_03.ucl remotely by ipath
-      community.general.ucl:
+      ucl:
         path: "{{ tests_dir }}/set.in"
         upath: rootkey.subkey
         ipath: "{{ tests_dir }}/set_03.ucl"
@@ -17,7 +17,7 @@
 
 - block:
     - name: 2) Input set_03.ucl localy by icontent
-      community.general.ucl:
+      ucl:
         path: "{{ tests_dir }}/set.in"
         upath: rootkey.subkey
         icontent: "{{ lookup('file', tests_dir_local ~ '/set_03.ucl') }}"
@@ -32,7 +32,7 @@
 
 - block:
     - name: 3) Input set_04.ucl remotely by ipath
-      community.general.ucl:
+      ucl:
         path: "{{ tests_dir }}/set.in"
         upath: rootkey.array
         ipath: "{{ tests_dir }}/set_04.ucl"
@@ -47,7 +47,7 @@
 
 - block:
     - name: 4) Input set_04.ucl localy by icontent
-      community.general.ucl:
+      ucl:
         path: "{{ tests_dir }}/set.in"
         upath: rootkey.array
         icontent: "{{ lookup('file', tests_dir_local ~ '/set_04.ucl') }}"
@@ -62,7 +62,7 @@
 
 - block:
     - name: 5) Input merge_01.ucl localy by icontent
-      community.general.ucl:
+      ucl:
         merge: true
         path: "{{ tests_dir }}/merge.in"
         upath: rootkey.subkey
@@ -78,7 +78,7 @@
 
 - block:
     - name: 6) Input merge_02.ucl localy by icontent
-      community.general.ucl:
+      ucl:
         merge: true
         path: "{{ tests_dir }}/merge.in"
         upath: rootkey.subkey
@@ -94,7 +94,7 @@
 
 - block:
     - name: 7) Input merge_03.ucl localy by icontent
-      community.general.ucl:
+      ucl:
         merge: true
         path: "{{ tests_dir }}/merge.in"
         upath: rootkey.array
@@ -110,7 +110,7 @@
 
 - block:
     - name: 8) Input merge_05.ucl localy by icontent
-      community.general.ucl:
+      ucl:
         merge: true
         path: "{{ tests_dir }}/merge.in"
         upath: rootkey.array
@@ -126,7 +126,7 @@
 
 - block:
     - name: 9) Input merge_06.ucl localy by icontent
-      community.general.ucl:
+      ucl:
         merge: true
         path: "{{ tests_dir }}/merge.in"
         upath: rootkey.array
@@ -142,7 +142,7 @@
 
 - block:
     - name: 10) Input merge_09.ucl localy by icontent
-      community.general.ucl:
+      ucl:
         merge: true
         path: "{{ tests_dir }}/merge.in"
         upath: .

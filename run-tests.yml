@@ -106,7 +106,7 @@
     # Module ucl. Example remove. - - - - - - - - - - - - - - - - - - - - - - -
 
     - block:
-        - community.general.ucl:
+        - ucl:
             path: "{{ tests_dir }}/set.in"
             upath: "rootkey.subkey.child"
             state: absent
@@ -119,7 +119,7 @@
     # Module ucl. Example set input. - - - - - - - - - - - - - - - - - - - - - -
 
     - block:
-        - community.general.ucl:
+        - ucl:
             path: "{{ tests_dir }}/set.in"
             upath: "rootkey.subkey.key"
             value: newvalue
