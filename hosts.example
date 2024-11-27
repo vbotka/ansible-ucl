@@ -1,14 +1,18 @@
-[test_ucl]
-# host1 ansible_host=10.1.0.17 ansible_user=asadmin
-test_11
-test_12
-test_13
+test_18
+test_23
 
-[test_ucl:vars]
+[bsd_141]
+test_23 ansible_host=10.1.0.73
+
+[bsd_141:vars]
 ansible_connection=ssh
 ansible_user=admin
-ansible_become=yes
-ansible_become_user=root
-ansible_become_method=sudo
-ansible_python_interpreter=/usr/local/bin/python3.8
-ansible_perl_interpreter=/usr/local/bin/perl
+ansible_python_interpreter=/usr/local/bin/python3.11
+
+[bsd_131]
+test_18 ansible_host=10.1.0.18
+
+[bsd_131:vars]
+ansible_connection=ssh
+ansible_user=admin
+ansible_python_interpreter=/usr/local/bin/python3.9
