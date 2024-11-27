@@ -3,9 +3,9 @@
   # Best practice - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   #
   # shell> ANSIBLE_STDOUT_CALLBACK=yaml \
-  # ANSIBLE_DISPLAY_SKIPPED_HOSTS=false \
-  # ANSIBLE_DISPLAY_OK_HOSTS=false \
-  # ansible-playbook tests-ucl.yml -e 'debug1=true test_ucl=test_ucl' -CD
+  #        ANSIBLE_DISPLAY_SKIPPED_HOSTS=false \
+  #        ANSIBLE_DISPLAY_OK_HOSTS=false \
+  #        ansible-playbook tests-ucl.yml -e 'debug1=true test_ucl=test_ucl' -CD
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 - name: All Ansible tests. Known problems disabled.
@@ -13,6 +13,7 @@
   gather_facts: false
 
   vars:
+
     group: ansible
 
     tests_files:
@@ -76,4 +77,5 @@
   tasks:
 
     - import_tasks: tasks/main.yml
-...
+
+# EOF
