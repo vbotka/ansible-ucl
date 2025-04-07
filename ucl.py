@@ -470,8 +470,8 @@ def create_content_diff(module, cmd_before, cmd_after):
     ucl_changed = len(udiff) > 0
     if ucl_changed:
         nl = '\n'
-        ucl_content_diff['before'] = f"{({nl}.join(list(difflib.restore(udiff, 1))))}\n"
-        ucl_content_diff['after'] = f"{({nl}.join(list(difflib.restore(udiff, 2))))}\n"
+        ucl_content_diff['before'] = f"{(nl.join(list(difflib.restore(udiff, 1))))}\n"
+        ucl_content_diff['after'] = f"{(nl.join(list(difflib.restore(udiff, 2))))}\n"
         ucl_content_diff['before_header'] = f"{path} (content)"
         ucl_content_diff['after_header'] = f"{path} (content)"
         # Include diff in diff mode.
