@@ -5,6 +5,21 @@ vbotka.ansible-ucl 1.0 Release Notes
 .. contents:: Topics
 
 
+1.1.1
+=====
+
+Release Summary
+---------------
+Formatting replaced by f-strings.
+
+Major Changes
+-------------
+
+Minor Changes
+-------------
+* Formatting replaced by f-strings.
+
+
 1.1.0
 =====
 
