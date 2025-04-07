@@ -17,6 +17,7 @@ Major Changes
 
 Minor Changes
 -------------
+* Fix docs attributes lint.
 * Fix docs examples YAML lint.
 
 
