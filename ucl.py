@@ -476,7 +476,7 @@ def create_content_diff(module, cmd_before, cmd_after):
         ucl_content_diff['after_header'] = f"{path} (content)"
         # Include diff in diff mode.
         if udiff_include:
-            ucl_content_diff['diff'] = f"{({nl}.join(udiff))}\n"
+            ucl_content_diff['diff'] = f"{(nl.join(udiff))}\n"
 
     return (rc, out, err)
 
