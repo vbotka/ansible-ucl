@@ -10,13 +10,14 @@ vbotka.ansible-ucl 1.0 Release Notes
 
 Release Summary
 ---------------
-Maintenance update.
+Fix docs.
 
 Major Changes
 -------------
 
 Minor Changes
 -------------
+* Fix docs description.
 * Fix docs attributes lint.
 * Fix docs examples YAML lint.
 
