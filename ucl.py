@@ -32,10 +32,9 @@ __metaclass__ = type
 
 DOCUMENTATION = r'''
 module: ucl
-
 short_description: Manage FreeBSD UCL config files
-
-description: A CRUD-like interface to managing UCL files.
+description: A CRUD-like interface for managing UCL files.
+version_added: '0.6.11'
 
 attributes:
   check_mode:
@@ -46,6 +45,7 @@ attributes:
 extends_documentation_fragment:
   - files
   - validate
+  - community.general.attributes
 
 options:
   path:
@@ -163,7 +163,7 @@ seealso:
   - name: Source code libucl
     description: UCL library
     link: https://github.com/vstakhov/libucl/
-  - name: Source code libucl
+  - name: Source code libucl macros
     description: Macros support
     link: https://github.com/vstakhov/libucl/#macros-support
 
@@ -192,7 +192,7 @@ EXAMPLES = r'''
     path: /foo/bar.conf
     upath: rootkey.subkey.key
     value: newvalue
-    merge: yes
+    merge: true
     executable: /usr/local/bin/uclcmd
 
 - name: Merge new value to upath in path. Set executable by environment on
@@ -201,7 +201,7 @@ EXAMPLES = r'''
     path: /foo/bar.conf
     upath: rootkey.subkey.key
     value: newvalue
-    merge: yes
+    merge: true
   environment:
     ANSIBLE_UCLCMD: /usr/local/bin/uclcmd
 
@@ -210,14 +210,14 @@ EXAMPLES = r'''
     path: /foo/bar.conf
     upath: rootkey.subkey.key
     ipath: merge.ucl
-    merge: yes
+    merge: true
 
 - name: Merge value from the UCL file on controller to upath in path
   ucl:
     path: /foo/bar.conf
     upath: rootkey.subkey.key
     icontent: "{{ lookup('file', 'merge.ucl') }}"
-    merge: yes
+    merge: true
 
 - name: Remove upath rootkey.subkey.key from path
   ucl:
