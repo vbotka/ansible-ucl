@@ -5,6 +5,21 @@ vbotka.ansible-ucl 1.0 Release Notes
 .. contents:: Topics
 
 
+1.1.3
+=====
+
+Release Summary
+---------------
+Fix docs.
+
+Major Changes
+-------------
+
+Minor Changes
+-------------
+* Fix extends_documentation_fragment. Add backup.
+
+
 1.1.2
 =====
 
