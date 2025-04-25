@@ -28,7 +28,6 @@
       ansible.builtin.git:
         repo: "{{ uclcmd_git }}"
         dest: "{{ playbook_dir }}/uclcmd"
-        mode: "0755"
 
     - name: "Debug result."
       when: debug | d(false) | bool
