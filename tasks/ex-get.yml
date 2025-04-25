@@ -21,7 +21,7 @@
         path: /etc/pkg/FreeBSD.conf
         upath: freebsd.url
       register: result
-    - set_fact:
+    - ansible.builtin.set_fact:
         freebsd_url: "{{ result.stdout }}"
     - ansible.builtin.debug:
         msg: "{{ msg.splitlines() }}"

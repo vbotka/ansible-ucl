@@ -60,7 +60,7 @@
       = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
       [ERR] {{ item.item.item.key }}
       - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      {{ item.item.invocation.module_args|to_nice_yaml }}
+      {{ item.item.invocation.module_args | to_nice_yaml }}
       - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       {{ item.invocation.module_args._raw_params }}
       - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -22,7 +22,7 @@
         - "{{ run_dir }}"
         - "{{ tests_dir }}"
 
-    - name: "Clone {{ uclcmd_git }} at localhost."
+    - name: "Clone uclcmd_git at localhost." # noqa: latest[git]
       register: result
       delegate_to: localhost
       ansible.builtin.git:
@@ -34,7 +34,7 @@
       ansible.builtin.debug:
         var: result
 
-    - name: "Sync tests to localhost:{{ playbook_dir }}/tests"
+    - name: "Sync tests to localhost:playbook_dir/tests" # noqa: command-instead-of-module
       register: result
       changed_when: result.stdout_lines|length > 0
       delegate_to: localhost
@@ -66,4 +66,4 @@
       ansible.builtin.debug:
         var: result
 
-    - meta: end_play
+    - ansible.builtin.meta: end_play

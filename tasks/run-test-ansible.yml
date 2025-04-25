@@ -81,13 +81,13 @@
 
   # Compare results
 
-- name: Diff results
+- name: Diff results # noqa: command-instead-of-shell
   vars:
     _empty: ""
     res: "{{ lookup('file', item.item.value.res) | string }}"
     _cmd_diff: 'diff -B <(echo "{{ item.stdout | d(_empty) }}") <(echo "{{ res }}")'
     _cmd_fail: '/usr/bin/false'
-    _cmd: "{{ item.failed | ternary(_cmd_fail,_cmd_diff) }}"
+    _cmd: "{{ item.failed | ternary(_cmd_fail, _cmd_diff) }}"
   check_mode: false
   changed_when: false
   ignore_errors: true

@@ -70,7 +70,9 @@
 
   tasks:
 
-    - assert:
+    - name: Assert check mode.
+      when: not no_check | d(false) | bool
+      ansible.builtin.assert:
         that: ansible_check_mode
         fail_msg: |
           You are running the playbook without option --check or
@@ -78,6 +80,5 @@
           directory tests. You will have to restore the files to prevent
           other tests from crashing. Disable this message by setting the
           option '-e no_check=True'.
-      when: not no_check | d(false) | bool
 
-    - import_tasks: tasks/run-test.yml
+    - ansible.builtin.import_tasks: tasks/run-test.yml

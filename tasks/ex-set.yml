@@ -6,7 +6,7 @@
         path: /etc/pkg/FreeBSD.conf
         upath: freebsd.url
       register: result
-    - set_fact:
+    - ansible.builtin.set_fact:
         freebsd_url: "{{ result.stdout }}"
 
 - name: SET-1
@@ -17,7 +17,7 @@
         upath: freebsd.url
         value: "pkg+http://pkg.FreeBSD.org/${ABI}/latest"
       register: result
-    - debug:
+    - ansible.builtin.debug:
         msg: "{{ msg.splitlines() }}"
       vars:
         msg: |-
@@ -32,7 +32,7 @@
         upath: freebsd.url
         value: "pkg+http://pkg.FreeBSD.org/${ABI}/quarterly"
       register: result
-    - debug:
+    - ansible.builtin.debug:
         msg: "{{ msg.splitlines() }}"
       vars:
         msg: |-
@@ -47,7 +47,7 @@
         upath: freebsd.url
         value: "{{ freebsd_url }}"
       register: result
-    - debug:
+    - ansible.builtin.debug:
         msg: "{{ msg.splitlines() }}"
       vars:
         msg: |-

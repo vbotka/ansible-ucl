@@ -8,7 +8,7 @@
         path: /etc/pkg/FreeBSD.conf
         upath: freebsd.foo
       register: result
-    - debug:
+    - ansible.builtin.debug:
         var: result
       when: debug | d(false) | bool
 
@@ -22,6 +22,6 @@
         value: bar
       register: result
       ignore_errors: true
-    - debug:
+    - ansible.builtin.debug:
         var: result
       when: debug | d(false) | bool

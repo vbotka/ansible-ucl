@@ -9,7 +9,7 @@
         upath: rootkey.subkey
         ipath: "{{ tests_dir }}/set_03.ucl"
       register: result
-    - debug:
+    - ansible.builtin.debug:
         msg: "{{ msg.splitlines() }}"
       vars:
         msg: |-
@@ -25,7 +25,7 @@
         upath: rootkey.subkey
         icontent: "{{ lookup('file', tests_dir_local ~ '/set_03.ucl') }}"
       register: result
-    - debug:
+    - ansible.builtin.debug:
         msg: "{{ msg.splitlines() }}"
       vars:
         msg: |-
@@ -41,7 +41,7 @@
         upath: rootkey.array
         ipath: "{{ tests_dir }}/set_04.ucl"
       register: result
-    - debug:
+    - ansible.builtin.debug:
         msg: "{{ msg.splitlines() }}"
       vars:
         msg: |-
@@ -57,7 +57,7 @@
         upath: rootkey.array
         icontent: "{{ lookup('file', tests_dir_local ~ '/set_04.ucl') }}"
       register: result
-    - debug:
+    - ansible.builtin.debug:
         msg: "{{ msg.splitlines() }}"
       vars:
         msg: |-
@@ -74,7 +74,7 @@
         upath: rootkey.subkey
         icontent: "{{ lookup('file', tests_dir_local ~ '/merge_01.ucl') }}"
       register: result
-    - debug:
+    - ansible.builtin.debug:
         msg: "{{ msg.splitlines() }}"
       vars:
         msg: |-
@@ -91,7 +91,7 @@
         upath: rootkey.subkey
         icontent: "{{ lookup('file', tests_dir_local ~ '/merge_02.ucl') }}"
       register: result
-    - debug:
+    - ansible.builtin.debug:
         msg: "{{ msg.splitlines() }}"
       vars:
         msg: |-
@@ -108,7 +108,7 @@
         upath: rootkey.array
         icontent: "{{ lookup('file', tests_dir_local ~ '/merge_03.ucl') }}"
       register: result
-    - debug:
+    - ansible.builtin.debug:
         msg: "{{ msg.splitlines() }}"
       vars:
         msg: |-
@@ -125,7 +125,7 @@
         upath: rootkey.array
         icontent: "{{ lookup('file', tests_dir_local ~ '/merge_05.ucl') }}"
       register: result
-    - debug:
+    - ansible.builtin.debug:
         msg: "{{ msg.splitlines() }}"
       vars:
         msg: |-
@@ -142,7 +142,7 @@
         upath: rootkey.array
         icontent: "{{ lookup('file', tests_dir_local ~ '/merge_06.ucl') }}"
       register: result
-    - debug:
+    - ansible.builtin.debug:
         msg: "{{ msg.splitlines() }}"
       vars:
         msg: |-
@@ -159,7 +159,7 @@
         upath: .
         icontent: "{{ lookup('file', tests_dir_local ~ '/merge_09.ucl') }}"
       register: result
-    - debug:
+    - ansible.builtin.debug:
         msg: "{{ msg.splitlines() }}"
       vars:
         msg: |-

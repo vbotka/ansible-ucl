@@ -50,7 +50,7 @@
       tags: [tests-command, tests-module]
       block:
 
-        - name: Assert patterns is defined. 
+        - name: Assert patterns is defined.
           ansible.builtin.assert:
             that: patterns is defined
             fail_msg: |-

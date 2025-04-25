@@ -1,7 +1,7 @@
 ---
 - name: Assert check mode
   when: not no_check | d(false) | bool
-  assert:
+  ansible.builtin.assert:
     that: ansible_check_mode
     fail_msg: |
       You are running the playbook without option --check or
@@ -11,4 +11,4 @@
       option '-e no_check=True'.
 
 - name: Run tests
-  import_tasks: tasks/run-test.yml
+  ansible.builtin.import_tasks: tasks/run-test.yml
