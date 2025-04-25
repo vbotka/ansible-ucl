@@ -8,6 +8,7 @@
       ansible.builtin.file:
         state: directory
         path: "{{ item }}"
+        mode: "0644"
       loop:
         - "{{ playbook_dir }}/uclcmd"
         - "{{ playbook_dir }}/tests"
@@ -16,6 +17,7 @@
       ansible.builtin.file:
         state: directory
         path: "{{ item }}"
+        mode: "0755"
       loop:
         - "{{ run_dir }}"
         - "{{ tests_dir }}"
@@ -26,6 +28,7 @@
       ansible.builtin.git:
         repo: "{{ uclcmd_git }}"
         dest: "{{ playbook_dir }}/uclcmd"
+        mode: "0755"
 
     - name: "Debug result."
       when: debug | d(false) | bool
@@ -55,6 +58,7 @@
           - --checksum
         src: "{{ item }}"
         dest: "{{ tests_dir }}"
+        mode: "0755"
       loop:
         - "{{ playbook_dir }}/uclcmd/tests/"
         - "{{ playbook_dir }}/tests.ansible/"
