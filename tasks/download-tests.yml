@@ -8,7 +8,7 @@
       ansible.builtin.file:
         state: directory
         path: "{{ item }}"
-        mode: "0644"
+        mode: "0755"
       loop:
         - "{{ playbook_dir }}/uclcmd"
         - "{{ playbook_dir }}/tests"
