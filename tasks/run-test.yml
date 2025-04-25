@@ -25,10 +25,11 @@
 
     - name: Set tests_files.
       when: tests_ansible.files | length > 0
-      tests_files_key: "{{ test_in | basename }}"
-      tests_files_val: "{{ tests_ansible.files | map(attribute='path')
-                                               | map('basename')
-                                               | sort }}"
+      vars:
+        tests_files_key: "{{ test_in | basename }}"
+        tests_files_val: "{{ tests_ansible.files | map(attribute='path')
+                                                 | map('basename')
+                                                 | sort }}"
       ansible.builtin.set_fact:
         tests_files: "{{ {tests_files_key: tests_files_val} }}"
 
