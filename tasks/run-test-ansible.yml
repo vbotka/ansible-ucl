@@ -7,14 +7,13 @@
 
 - name: Create dictionary _tests
   vars:
-    _test: "{{ item.1 }}"
+    _test_key: "{{ item.1 }}"
+    _test_val: "{{ dict(['in', 'mod', 'res'] | zip([_in, _mod, _res])) }}"
     _in: "{{ tests_dir ~ '/' ~ item.0.key }}"
     _mod: "{{ lookup('template', tests_dir_local ~ '/' ~ item.1)|from_yaml }}"
     _res: "{{ tests_dir_local }}/{{ (item.1|splitext).0 }}.res"
   ansible.builtin.set_fact:
-    _tests: "{{ _tests | combine({_test: {'in': _in,
-                                          'mod': _mod,
-                                          'res': _res}}) }}"
+    _tests: "{{ _tests | combine({_test_key: _test_val}) }}"
   loop: "{{ tests_files | dict2items | subelements('value') }}"
 
 - name: Debug2 tests
