@@ -1,15 +1,17 @@
 ---
-
-- block:
+- name: SET-3
+  tags: ex-set-3
+  block:
     - ucl:
         path: /etc/pkg/FreeBSD.conf
         upath: freebsd.url
       register: result
     - set_fact:
         freebsd_url: "{{ result.stdout }}"
-  tags: ex-set-3
 
-- block:
+- name: SET-1
+  tags: ex-set-1
+  block:
     - ucl:
         path: /etc/pkg/FreeBSD.conf
         upath: freebsd.url
@@ -19,11 +21,12 @@
         msg: "{{ msg.splitlines() }}"
       vars:
         msg: |-
-          {{ result|to_nice_yaml }}
-      when: debug|default(false)|bool
-  tags: ex-set-1
+          {{ result | to_nice_yaml }}
+      when: debug | d(false) | bool
 
-- block:
+- name: SET-2
+  tags: ex-set-2
+  block:
     - ucl:
         path: /etc/pkg/FreeBSD.conf
         upath: freebsd.url
@@ -33,11 +36,12 @@
         msg: "{{ msg.splitlines() }}"
       vars:
         msg: |-
-          {{ result|to_nice_yaml }}
-      when: debug|default(false)|bool
-  tags: ex-set-2
+          {{ result | to_nice_yaml }}
+      when: debug | d(false) | bool
 
-- block:
+- name: SET-3
+  tags: ex-set-3
+  block:
     - ucl:
         path: /etc/pkg/FreeBSD.conf
         upath: freebsd.url
@@ -47,6 +51,5 @@
         msg: "{{ msg.splitlines() }}"
       vars:
         msg: |-
-          {{ result|to_nice_yaml }}
-      when: debug|default(false)|bool
-  tags: ex-set-3
+          {{ result | to_nice_yaml }}
+      when: debug | d(false) | bool
