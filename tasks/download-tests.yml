@@ -57,7 +57,6 @@
           - --checksum
         src: "{{ item }}"
         dest: "{{ tests_dir }}"
-        mode: "0755"
       loop:
         - "{{ playbook_dir }}/uclcmd/tests/"
         - "{{ playbook_dir }}/tests.ansible/"
