@@ -1,6 +1,7 @@
 ---
-
-- assert:
+- name: Assert check mode
+  when: not no_check | d(false) | bool
+  assert:
     that: ansible_check_mode
     fail_msg: |
       You are running the playbook without option --check or
@@ -8,6 +9,6 @@
       directory tests. You will have to restore the files to prevent
       other tests from crashing. Disable this message by setting the
       option '-e no_check=True'.
-  when: not no_check|default(False)|bool
 
-- import_tasks: tasks/run-test.yml
+- name: Run tests
+  import_tasks: tasks/run-test.yml

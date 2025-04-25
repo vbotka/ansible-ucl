@@ -5,7 +5,7 @@
 # shell> ansible-playbook run-tests.yml -e 'test_ucl=test_ucl debug=true' -t ex-set -CD
 
 - name: Collection of tests.
-  hosts: "{{ test_ucl|default('localhost') }}"
+  hosts: "{{ test_ucl | default('localhost') }}"
   gather_facts: false
 
   vars:
@@ -25,7 +25,7 @@
     # Sanity - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     - ansible.builtin.assert:
-        that: ansible_run_tags|difference(['all'])|length > 0
+        that: ansible_run_tags | difference(['all']) | length > 0
         fail_msg: |-
           Can not run without any tag. This playbook is a collection of
           various tests. Use option --list-tags to list them all. Pick
@@ -40,7 +40,7 @@
           prevent other tests from crashing. Disable this message by
           setting the option '-e no_check=True'.
       when:
-        - not no_check|default(false)|bool
+        - not no_check | default(false) | bool
         - group != 'cmd'
       tags: always
 
@@ -61,14 +61,14 @@
           register: tests_in
 
         - ansible.builtin.debug:
-            var: tests_in.files|map(attribute='path')|list
-          when: debug|default(false)|bool
+            var: tests_in.files | map(attribute='path') | list
+          when: debug | default(false) | bool
 
         - ansible.builtin.include_tasks:
             file: tasks/run-test.yml
             apply:
               tags: [tests-command, tests-module]
-          loop: "{{ tests_in.files|map(attribute='path')|list }}"
+          loop: "{{ tests_in.files | map(attribute='path') | list }}"
           loop_control:
             loop_var: test_in
 
@@ -113,7 +113,7 @@
           register: result
         - ansible.builtin.debug:
             var: result
-          when: debug|default(false)|bool
+          when: debug | default(false) | bool
       tags: ex-rm-1
 
     # Module ucl. Example set input. - - - - - - - - - - - - - - - - - - - - - -
@@ -126,7 +126,7 @@
           register: result
         - ansible.builtin.debug:
             var: result
-          when: debug|default(false)|bool
+          when: debug | default(false) | bool
       tags: ex-set-in
 
     # Module ucl. Example change file ownership and permissions, and backup. - -

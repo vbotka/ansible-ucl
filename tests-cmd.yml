@@ -1,6 +1,6 @@
 ---
 
-- hosts: "{{ test_ucl|default('localhost') }}"
+- hosts: "{{ test_ucl | default('localhost') }}"
   gather_facts: false
 
   vars:

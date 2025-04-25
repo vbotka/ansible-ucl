@@ -28,6 +28,11 @@ shell> ansible-config dump | grep DEFAULT_MODULE_PATH
 DEFAULT_MODULE_PATH(default) = ['/home/admin/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
 ```
 
+Put the module into the directory *library* if you want to use this module with
+a single playbook or role.
+
+See [Adding standalone local modules for selected playbooks or a single role](https://docs.ansible.com/ansible/latest/dev_guide/developing_locally.html#adding-standalone-local-modules-for-selected-playbooks-or-a-single-role)
+
 
 ## Documentation
 
@@ -84,6 +89,18 @@ See included playbooks, tasks and tests.
 
 ## Test
 
+### Required pacakges
+
+py311-numpy
+py311-pandas
+
+### Plugins
+
+filter_plugins/pandas_filters
+See [pandas_filters](https://docs.ansible.com/ansible/latest/dev_guide/developing_locally.html#adding-standalone-local-modules-for-selected-playbooks-or-a-single-role)
+
+### Download tests
+
 This module is tested with selected set of the
 [uclcmd tests](https://github.com/allanjude/uclcmd/tree/master/tests).
 Download these tests and create both local and remote directories ``tests``
@@ -91,17 +108,19 @@ including
 [Ansible tests](https://github.com/vbotka/ansible-ucl/tree/master/tests.ansible)
 
 ```sh
-shell> ansible-playbook run-tests.yml -e test_ucl=test_ucl \
-                                      -e download_tests=true \
-									  -e debug=true
+shell> ansible-playbook run-tests.yml -e download_tests=true -e debug=true
 ```
+
+### In the directory library link the module ucl
+
+ucl.py -> ../ucl.py
+
+### Run the tests
 
 When the directories ``test`` are created run the play
 
 ```sh
-shell> ansible-playbook tests-ucl.yml -e test_ucl=test_ucl \
-                                      -e debug1=true \
-									  -C
+shell> ansible-playbook tests-ucl.yml -e debug1=true -C
 ```
 
 See NOTES to learn details.
