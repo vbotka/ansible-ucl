@@ -24,7 +24,7 @@ The module is idempotent and supports both check_mode and debug.
 Put the module to DEFAULT_MODULE_PATH
 
 ```sh
-shell> ansible-config dump|grep DEFAULT_MODULE_PATH
+shell> ansible-config dump | grep DEFAULT_MODULE_PATH
 DEFAULT_MODULE_PATH(default) = ['/home/admin/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
 ```
 
@@ -93,7 +93,7 @@ including
 ```sh
 shell> ansible-playbook run-tests.yml -e test_ucl=test_ucl \
                                       -e download_tests=true \
-									  - debug=true
+									  -e debug=true
 ```
 
 When the directories ``test`` are created run the play
