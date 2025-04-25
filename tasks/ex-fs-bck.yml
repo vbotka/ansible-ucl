@@ -1,99 +1,88 @@
 ---
-
-- name: Examples. Set value. Set fs. Backup. All test in sequence restore the origin.
+- name: Examples
+  module_defaults:
+    ucl:
+      path: /etc/pkg/FreeBSD.conf
+      owner: root
+      group: wheel
+      mode: '0664'
   block:
-    - name: Set group writable
-      ucl:
-        path: /etc/pkg/FreeBSD.conf
-        owner: root
-        group: wheel
-        mode: '0664'
-        upath: freebsd.url
-      register: result
-    - ansible.builtin.debug:
-        var: result
-      when: debug|default(false)|bool
-  tags: ex-get-fs-1
 
-- block:
-    - ucl:
-        path: /etc/pkg/FreeBSD.conf
-        owner: admin
-        group: wheel
-        mode: '0644'
-        upath: freebsd.url
-      register: result
-    - ansible.builtin.debug:
-        var: result
-      when: debug|default(false)|bool
-  tags: ex-get-fs-2
+    - name: Examples. Set value. Set fs. Backup. All test in sequence restore the origin.
+      tags: ex-get-fs-1
+      block:
+        - name: Set group writable
+          ucl:
+            upath: freebsd.url
+          register: result
+        - ansible.builtin.debug:
+            var: result
+          when: debug | d(false) | bool
 
-- block:
-    - ucl:
-        path: /etc/pkg/FreeBSD.conf
-        upath: freebsd.foo
-      register: result
-    - ansible.builtin.debug:
-        var: result
-      when: debug|default(false)|bool
-  tags: ex-get-fs-3
+    - name: GET-FS-2
+      tags: ex-get-fs-2
+      block:
+        - ucl:
+            upath: freebsd.url
+          register: result
+        - ansible.builtin.debug:
+            var: result
+          when: debug | d(false) | bool
 
-- block:
-    - ucl:
-        path: /etc/pkg/FreeBSD.conf
-        owner: admin
-        group: wheel
-        mode: '0664'
-        upath: freebsd.url
-        value: "pkg+http://pkg.FreeBSD.org/${ABI}/quarterly"
-        backup: true
-      register: result
-    - ansible.builtin.debug:
-        var: result
-      when: debug|default(false)|bool
-  tags: ex-set-fs-bck-1
+    - name: GET-FS-3
+      tags: ex-get-fs-3
+      block:
+        - ucl:
+            upath: freebsd.foo
+          register: result
+        - ansible.builtin.debug:
+            var: result
+          when: debug | d(false) | bool
 
-- block:
-    - ucl:
-        path: /etc/pkg/FreeBSD.conf
-        owner: root
-        group: wheel
-        mode: '0664'
-        upath: freebsd.url
-        state: absent
-        backup: true
-      register: result
-    - ansible.builtin.debug:
-        var: result
-      when: debug|default(false)|bool
-  tags: ex-rm-fs-bck-1
+    - name: SET-FS-BCK-1
+      tags: ex-set-fs-bck-1
+      block:
+        - ucl:
+            upath: freebsd.url
+            value: "pkg+http://pkg.FreeBSD.org/${ABI}/quarterly"
+            backup: true
+          register: result
+        - ansible.builtin.debug:
+            var: result
+          when: debug | d(false) | bool
 
-- block:
-    - ucl:
-        path: /etc/pkg/FreeBSD.conf
-        owner: root
-        group: wheel
-        mode: '0644'
-        upath: freebsd.url
-        state: absent
-        backup: true
-      register: result
-    - ansible.builtin.debug:
-        var: result
-      when: debug|default(false)|bool
-  tags: ex-rm-fs-bck-2
+    - name: RM-FS-BCK-1
+      tags: ex-rm-fs-bck-1
+      block:
+        - ucl:
+            upath: freebsd.url
+            state: absent
+            backup: true
+          register: result
+        - ansible.builtin.debug:
+            var: result
+          when: debug | d(false) | bool
 
-- block:
-    - ucl:
-        path: /etc/pkg/FreeBSD.conf
-        owner: root
-        group: wheel
-        mode: '0644'
-        upath: freebsd.url
-        value: "pkg+http://pkg.FreeBSD.org/${ABI}/latest"
-        backup: true
-      register: result
-    - ansible.builtin.debug:
-        var: result
-      when: debug|default(false)|bool
-  tags: ex-set-fs-bck-2
+    - name: RM-FS-BCK-2
+      tags: ex-rm-fs-bck-2
+      block:
+        - ucl:
+            upath: freebsd.url
+            state: absent
+            backup: true
+          register: result
+        - ansible.builtin.debug:
+            var: result
+          when: debug | d(false) | bool
+
+    - name: SET-FS-BCK-2
+      tags: ex-set-fs-bck-2
+      block:
+        - ucl:
+            upath: freebsd.url
+            value: "pkg+http://pkg.FreeBSD.org/${ABI}/latest"
+            backup: true
+          register: result
+        - ansible.builtin.debug:
+            var: result
+          when: debug | d(false) | bool
