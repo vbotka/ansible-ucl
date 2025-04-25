@@ -31,7 +31,6 @@
                                               | map('basename')
                                               | sort} }}"
 
-
 - name: Assert tests_files
   ansible.builtin.assert:
     that: tests_files is defined
