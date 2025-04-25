@@ -18,6 +18,8 @@ Major Changes
 Minor Changes
 -------------
 * Fix extends_documentation_fragment. Add backup.
+* Fix extends_documentation_fragment FQDN.
+* Remove documentation attributes.
 
 
 1.1.2
