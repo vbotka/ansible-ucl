@@ -9,7 +9,7 @@
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 - name: All Ansible tests. Known problems disabled.
-  hosts: "{{ test_ucl | default('localhost') }}"
+  hosts: "{{ test_ucl | d('localhost') }}"
   gather_facts: false
 
   vars:
