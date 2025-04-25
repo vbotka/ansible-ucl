@@ -9,9 +9,9 @@
   vars:
     _test_key: "{{ item.1 }}"
     _test_val: "{{ dict(['in', 'mod', 'res'] | zip([_in, _mod, _res])) }}"
-    _in: "{{ tests_dir ~ '/' ~ item.0.key }}"
-    _mod: "{{ lookup('template', tests_dir_local ~ '/' ~ item.1)|from_yaml }}"
-    _res: "{{ tests_dir_local }}/{{ (item.1|splitext).0 }}.res"
+    _in: "{{ tests_dir }}/{{ item.0.key }}"
+    _mod: "{{ lookup('template', tests_dir_local ~ '/' ~ item.1) | from_yaml }}"
+    _res: "{{ tests_dir_local }}/{{ item.1 | splitext | first }}.res"
   ansible.builtin.set_fact:
     _tests: "{{ _tests | combine({_test_key: _test_val}) }}"
   loop: "{{ tests_files | dict2items | subelements('value') }}"
@@ -30,21 +30,21 @@
       ucl:
         executable: "{{ uclcmd }}"
         path: "{{ item.value.in }}"
-        backup: "{{ item.value.mod.ucl.backup|default(omit) }}"
-        chdir: "{{ item.value.mod.ucl.chdir|default(omit) }}"
-        create: "{{ item.value.mod.ucl.create|default(omit) }}"
-        delimiter: "{{ item.value.mod.ucl.delimiter|default(omit) }}"
-        icontent: "{{ item.value.mod.ucl.icontent|default(omit) }}"
-        ipath: "{{ item.value.mod.ucl.ipath|default(omit) }}"
-        lang: "{{ item.value.mod.ucl.lang|default(omit) }}"
-        merge: "{{ item.value.mod.ucl.merge|default(omit) }}"
-        state: "{{ item.value.mod.ucl.state|default(omit) }}"
-        upath: "{{ item.value.mod.ucl.upath|default(omit) }}"
-        validate: "{{ item.value.mod.ucl.validate|default(omit) }}"
-        value: "{{ item.value.mod.ucl.value|default(omit) }}"
-        vtype: "{{ item.value.mod.ucl.vtype|default(omit) }}"
+        backup: "{{ item.value.mod.ucl.backup | d(omit) }}"
+        chdir: "{{ item.value.mod.ucl.chdir | d(omit) }}"
+        create: "{{ item.value.mod.ucl.create | d(omit) }}"
+        delimiter: "{{ item.value.mod.ucl.delimiter | d(omit) }}"
+        icontent: "{{ item.value.mod.ucl.icontent | d(omit) }}"
+        ipath: "{{ item.value.mod.ucl.ipath | d(omit) }}"
+        lang: "{{ item.value.mod.ucl.lang | d(omit) }}"
+        merge: "{{ item.value.mod.ucl.merge | d(omit) }}"
+        state: "{{ item.value.mod.ucl.state | d(omit) }}"
+        upath: "{{ item.value.mod.ucl.upath | d(omit) }}"
+        validate: "{{ item.value.mod.ucl.validate | d(omit) }}"
+        value: "{{ item.value.mod.ucl.value | d(omit) }}"
+        vtype: "{{ item.value.mod.ucl.vtype | d(omit) }}"
       register: tests_res
-      loop: "{{ _tests|dict2items }}"
+      loop: "{{ _tests | dict2items }}"
       loop_control:
         label: "{{ item.key }}"
 
@@ -74,7 +74,7 @@
       {{ res | type_debug }}
       {{ res | trim }}
   ansible.builtin.debug:
-    msg: "{{ msg.split('\n') }}"
+    msg: "{{ msg.split('\\n') }}"
   loop: "{{ tests_res.results }}"
   loop_control:
     label: "{{ item.item.key }}"
