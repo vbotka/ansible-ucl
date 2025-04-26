@@ -74,7 +74,7 @@
       {{ res | type_debug }}
       {{ res | trim }}
   ansible.builtin.debug:
-    msg: "{{ msg.split('\\n') }}"
+    msg: "{{ msg | split('\n') }}"
   loop: "{{ tests_res.results }}"
   loop_control:
     label: "{{ item.item.key }}"
