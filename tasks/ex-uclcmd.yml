@@ -4,28 +4,28 @@
 # or env *ANSIBLE_UCLCMD*
 
 - name: Examples. ANSIBLE_UCLCMD
+  tags: ex-uclcmd-1
   block:
     - name: Get upath.
+      environment:
+        ANSIBLE_UCLCMD: /usr/local/bin/uclcmd-v2
+      register: result
       ucl:
         path: /etc/pkg/FreeBSD.conf
         upath: freebsd.url
-      register: result
-      environment:
-        ANSIBLE_UCLCMD: /usr/local/bin/uclcmd-v2
     - ansible.builtin.debug:
         var: result
-      when: debug|default(false)|bool
-  tags: ex-uclcmd-1
+      when: debug | d(false) | bool
 
 - name: Examples. ANSIBLE_UCLCMD
+  tags: ex-uclcmd-2
   block:
     - name: Get upath.
+      register: result
       ucl:
         path: /etc/pkg/FreeBSD.conf
         upath: freebsd.url
         executable: /usr/local/bin/uclcmd-v2
-      register: result
     - ansible.builtin.debug:
         var: result
-      when: debug|default(false)|bool
-  tags: ex-uclcmd-2
+      when: debug | d(false) | bool

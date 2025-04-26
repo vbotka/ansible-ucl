@@ -1,6 +1,7 @@
 ---
-
-- block:
+- name: VAL-1
+  tags: ex-val-1
+  block:
     - ucl:
         path: /etc/ssh/sshd_config
         owner: root
@@ -15,14 +16,15 @@
         msg: "{{ msg.splitlines() }}"
       vars:
         msg: |-
-          {{ result|to_nice_yaml }}
-      when: debug|default(false)|bool
-  tags: ex-val-1
+          {{ result | to_nice_yaml }}
+      when: debug | d(false) | bool
 
 # shell> ansible-playbook run_tests.yml -t ex-val-2 -e debug=true
 # message: Content changed. Validated. Temporary file moved to path.
 
-- block:
+- name: VAL-2
+  tags: ex-val-2
+  block:
     - ucl:
         path: /etc/pkg/FreeBSD.conf
         owner: root
@@ -36,11 +38,12 @@
         msg: "{{ msg.splitlines() }}"
       vars:
         msg: |-
-          {{ result|to_nice_yaml }}
-      when: debug|default(false)|bool
-  tags: ex-val-2
+          {{ result | to_nice_yaml }}
+      when: debug | d(false) | bool
 
-- block:
+- name: VAL-3
+  tags: ex-val-3
+  block:
     - ucl:
         path: /etc/pkg/FreeBSD.conf
         owner: root
@@ -54,6 +57,5 @@
         msg: "{{ msg.splitlines() }}"
       vars:
         msg: |-
-          {{ result|to_nice_yaml }}
-      when: debug|default(false)|bool
-  tags: ex-val-3
+          {{ result | to_nice_yaml }}
+      when: debug | d(false) | bool

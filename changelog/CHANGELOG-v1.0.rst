@@ -5,6 +5,28 @@ vbotka.ansible-ucl 1.0 Release Notes
 .. contents:: Topics
 
 
+1.1.3
+=====
+
+Release Summary
+---------------
+Fix docs.
+
+Major Changes
+-------------
+
+Minor Changes
+-------------
+* Fix extends_documentation_fragment. Add backup.
+* Fix extends_documentation_fragment FQDN.
+* Remove documentation attributes.
+* Update tests
+* Remove stdout_callback from ansible.cfg.
+  Add callback_result_format = yaml
+* Link module to the directory library.
+* Update README.
+
+
 1.1.2
 =====
 

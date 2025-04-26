@@ -1,6 +1,8 @@
 ---
 
-- block:
+- name: MERGE-1
+  tags: test-merge-1
+  block:
     - ucl:
         merge: true
         path: "{{ tests_dir }}/merge.in"
@@ -11,10 +13,11 @@
         msg: "{{ msg.splitlines() }}"
       vars:
         msg: |-
-          {{ result|to_nice_yaml }}
-  tags: test-merge-1
+          {{ result | to_nice_yaml }}
 
-- block:
+- name: MERGE-2
+  tags: test-merge-2
+  block:
     - ucl:
         merge: true
         path: "{{ tests_dir }}/merge.in"
@@ -25,10 +28,11 @@
         msg: "{{ msg.splitlines() }}"
       vars:
         msg: |-
-          {{ result|to_nice_yaml }}
-  tags: test-merge-2
+          {{ result | to_nice_yaml }}
 
-- block:
+- name: MERGE-3
+  tags: test-merge-3
+  block:
     - ucl:
         merge: true
         path: "{{ tests_dir }}/merge.in"
@@ -39,10 +43,11 @@
         msg: "{{ msg.splitlines() }}"
       vars:
         msg: |-
-          {{ result|to_nice_yaml }}
-  tags: test-merge-3
+          {{ result | to_nice_yaml }}
 
-- block:
+- name: MERGE-4
+  tags: test-merge-4
+  block:
     - ucl:
         merge: true
         path: "{{ tests_dir }}/merge.in"
@@ -53,10 +58,11 @@
         msg: "{{ msg.splitlines() }}"
       vars:
         msg: |-
-          {{ result|to_nice_yaml }}
-  tags: test-merge-4
+          {{ result | to_nice_yaml }}
 
-- block:
+- name: MERGE-5
+  tags: test-merge-5
+  block:
     - ucl:
         merge: true
         path: "{{ tests_dir }}/merge.in"
@@ -67,10 +73,11 @@
         msg: "{{ msg.splitlines() }}"
       vars:
         msg: |-
-          {{ result|to_nice_yaml }}
-  tags: test-merge-5
+          {{ result | to_nice_yaml }}
 
-- block:
+- name: MERGE-6
+  tags: test-merge-6
+  block:
     - ucl:
         merge: true
         path: "{{ tests_dir }}/merge.in"
@@ -81,10 +88,11 @@
         msg: "{{ msg.splitlines() }}"
       vars:
         msg: |-
-          {{ result|to_nice_yaml }}
-  tags: test-merge-6
+          {{ result | to_nice_yaml }}
 
-- block:
+- name: MERGE-7
+  tags: test-merge-7
+  block:
     - ucl:
         merge: true
         path: "{{ tests_dir }}/merge.in"
@@ -95,10 +103,11 @@
         msg: "{{ msg.splitlines() }}"
       vars:
         msg: |-
-          {{ result|to_nice_yaml }}
-  tags: test-merge-7
+          {{ result | to_nice_yaml }}
 
-- block:
+- name: MERGE-8
+  tags: test-merge-8
+  block:
     - ucl:
         merge: true
         path: "{{ tests_dir }}/merge.in"
@@ -109,10 +118,11 @@
         msg: "{{ msg.splitlines() }}"
       vars:
         msg: |-
-          {{ result|to_nice_yaml }}
-  tags: test-merge-8
+          {{ result | to_nice_yaml }}
 
-- block:
+- name: MERGE-9
+  tags: test-merge-9
+  block:
     - ucl:
         merge: true
         path: "{{ tests_dir }}/merge.in"
@@ -123,5 +133,4 @@
         msg: "{{ msg.splitlines() }}"
       vars:
         msg: |-
-          {{ result|to_nice_yaml }}
-  tags: test-merge-9
+          {{ result | to_nice_yaml }}

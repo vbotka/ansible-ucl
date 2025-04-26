@@ -1,11 +1,12 @@
 ---
 
 # Best practice
-# shell> ansible-playbook run-tests.yml -e 'test_ucl=test_ucl download_tests=true debug=true'
-# shell> ansible-playbook run-tests.yml -e 'test_ucl=test_ucl debug=true' -t ex-set -CD
+# shell> ansible-playbook run-tests.yml -e download_tests=true -e debug=true
+# shell> ansible-playbook run-tests.yml -e patch_tests=true -e debug=true
+# shell> ansible-playbook run-tests.yml -t ex-set -e debug=true -CD
 
 - name: Collection of tests.
-  hosts: "{{ test_ucl|default('localhost') }}"
+  hosts: "{{ test_ucl | default('localhost') }}"
   gather_facts: false
 
   vars:
@@ -18,135 +19,141 @@
 
   tasks:
 
-    # Download tests and exit - - - - - - - - - - - - - - - - - - - - - - - - -
+    - name: Download tests and exit.
+      when: download_tests | d(false) | bool
+      ansible.builtin.import_tasks: tasks/download-tests.yml
 
-    - ansible.builtin.import_tasks: tasks/download-tests.yml
+    - name: Patch tests and exit.
+      when: patch_tests | d(false) | bool
+      ansible.builtin.import_tasks: tasks/patch-tests.yml
 
-    # Sanity - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    - name: Sanity
+      block:
 
-    - ansible.builtin.assert:
-        that: ansible_run_tags|difference(['all'])|length > 0
-        fail_msg: |-
-          Can not run without any tag. This playbook is a collection of
-          various tests. Use option --list-tags to list them all. Pick
-          a test you want to run. Review the code of the test first.
+        - name: Assert run tags.
+          ansible.builtin.assert:
+            that: ansible_run_tags | difference(['all']) | length > 0
+            fail_msg: |-
+              Can not run without any tag. This playbook is a collection of
+              various tests. Use option --list-tags to list them all. Pick
+              a test you want to run. Review the code of the test first.
 
-    - ansible.builtin.assert:
-        that: ansible_check_mode
-        fail_msg: |-
-          You are running the Ansible module ucl tests without option
-          --check or equivalent -C. This can modify the files *.in in
-          the directory tests. You will have to restore the files to
-          prevent other tests from crashing. Disable this message by
-          setting the option '-e no_check=True'.
-      when:
-        - not no_check|default(false)|bool
-        - group != 'cmd'
-      tags: always
+        - name: Assert check mode.
+          when:
+            - not no_check | default(false) | bool
+            - group != 'cmd'
+          tags: always
+          ansible.builtin.assert:
+            that: ansible_check_mode
+            fail_msg: |-
+              You are running the Ansible module ucl tests without option
+              --check or equivalent -C. This can modify the files *.in in
+              the directory tests. You will have to restore the files to
+              prevent other tests from crashing. Disable this message by
+              setting the option '-e no_check=True'.
 
-    # Find and run all tests by the group and patterns - - - - - - - - - - - - -
+    - name: Find and run all tests by the group and patterns.
+      tags: [tests-command, tests-module]
+      block:
 
-    - block:
-
-        - ansible.builtin.assert:
+        - name: Assert patterns is defined.
+          ansible.builtin.assert:
             that: patterns is defined
             fail_msg: |-
               The variable *patterns* is not defined. Set it on the command line, e.g.
               shell> ansible-playbook run_tests.yml -t tests-module -e patterns=get.in
               choices: ['*.in', 'get.in', 'set.in', 'merge.in', 'include-*.in']
 
-        - ansible.builtin.find:
+        - name: Find patterns.
+          register: tests_in
+          ansible.builtin.find:
             paths: "{{ tests_dir }}"
             patterns: "{{ patterns }}"
-          register: tests_in
 
-        - ansible.builtin.debug:
-            var: tests_in.files|map(attribute='path')|list
-          when: debug|default(false)|bool
+        - name: Debug tests_in files
+          when: debug | default(false) | bool
+          ansible.builtin.debug:
+            var: tests_in.files | map(attribute='path') | list
 
-        - ansible.builtin.include_tasks:
+        - name: Include run-test.yml
+          ansible.builtin.include_tasks:
             file: tasks/run-test.yml
             apply:
               tags: [tests-command, tests-module]
-          loop: "{{ tests_in.files|map(attribute='path')|list }}"
+          loop: "{{ tests_in.files | map(attribute='path') | list }}"
           loop_control:
             loop_var: test_in
 
-      tags: [tests-command, tests-module]
+    - name: Module ucl all include/merge/set tests available by tags.
+      block:
 
-    # Module ucl all include/merge/set tests available by tags. - - - - - - - -
+        - ansible.builtin.import_tasks: tasks/tests-module-include.yml
+          tags: tests-module-include
+        - ansible.builtin.import_tasks: tasks/tests-module-merge.yml
+          tags: tests-module-merge
+        - ansible.builtin.import_tasks: tasks/tests-module-set.yml
+          tags: tests-module-set
 
-    - ansible.builtin.import_tasks: tasks/tests-module-include.yml
-      tags: tests-module-include
-    - ansible.builtin.import_tasks: tasks/tests-module-merge.yml
-      tags: tests-module-merge
-    - ansible.builtin.import_tasks: tasks/tests-module-set.yml
-      tags: tests-module-set
-
-    # Module ucl. Example get all formats. - - - - - - - - - - - - - - - - - - -
-
-    - ansible.builtin.import_tasks: tasks/ex-get-all-formats.yml
+    - name: Module ucl. Example get all formats.
       tags: ex-get-all-formats
+      ansible.builtin.import_tasks: tasks/ex-get-all-formats.yml
 
-    # Module ucl. Example get. - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    - ansible.builtin.import_tasks: tasks/ex-get.yml
+    - name: Module ucl. Example get.
       tags: ex-get
+      ansible.builtin.import_tasks: tasks/ex-get.yml
 
-    # Module ucl. Example stderr. - - - - - - - - - - - - - - - - - - - - - - -
-
-    - ansible.builtin.import_tasks: tasks/ex-get-err.yml
+    - name: Module ucl. Example stderr.
       tags: ex-get-err
+      ansible.builtin.import_tasks: tasks/ex-get-err.yml
 
-    # Module ucl. Example set. - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    - ansible.builtin.import_tasks: tasks/ex-set.yml
+    - name: Module ucl. Example set.
       tags: ex-set
+      ansible.builtin.import_tasks: tasks/ex-set.yml
 
-    # Module ucl. Example remove. - - - - - - - - - - - - - - - - - - - - - - -
+    - name: Module ucl. Example remove.
+      tags: ex-rm-1
+      block:
 
-    - block:
-        - ucl:
+        - name: Remove.
+          register: result
+          ucl:
             path: "{{ tests_dir }}/set.in"
             upath: "rootkey.subkey.child"
             state: absent
-          register: result
-        - ansible.builtin.debug:
+
+        - name: Debug result.
+          when: debug | d(false) | bool
+          ansible.builtin.debug:
             var: result
-          when: debug|default(false)|bool
-      tags: ex-rm-1
 
-    # Module ucl. Example set input. - - - - - - - - - - - - - - - - - - - - - -
+    - name: Module ucl. Example set input.
+      tags: ex-set-in
+      block:
 
-    - block:
-        - ucl:
+        - name: Set input.
+          register: result
+          ucl:
             path: "{{ tests_dir }}/set.in"
             upath: "rootkey.subkey.key"
             value: newvalue
-          register: result
-        - ansible.builtin.debug:
+
+        - name: Debug result.
+          when: debug | d(false) | bool
+          ansible.builtin.debug:
             var: result
-          when: debug|default(false)|bool
-      tags: ex-set-in
 
-    # Module ucl. Example change file ownership and permissions, and backup. - -
-
-    - ansible.builtin.import_tasks: tasks/ex-fs-bck.yml
+    - name: Module ucl. Example change file ownership and permissions, and backup.
       tags: ex-fs-bck
+      ansible.builtin.import_tasks: tasks/ex-fs-bck.yml
 
-    # Module ucl. Example validate. - - - - - - - - - - - - - - - - - - - - - -
-
-    - ansible.builtin.import_tasks: tasks/ex-val.yml
+    - name: Module ucl. Example validate.
       tags: ex-val
+      ansible.builtin.import_tasks: tasks/ex-val.yml
 
-    # Module ucl. Example icontent. - - - - - - - - - - - - - - - - - - - - - -
-
-    - ansible.builtin.import_tasks: tasks/ex-icontent.yml
+    - name: Module ucl. Example icontent.
       tags: ex-icontent
+      ansible.builtin.import_tasks: tasks/ex-icontent.yml
 
-    # Module ucl. Example ANSIBLE_UCLCMD - - - - - - - - - - - - - - - - - - -
-
-    - ansible.builtin.import_tasks: tasks/ex-uclcmd.yml
+    - name: Module ucl. Example ANSIBLE_UCLCMD
       tags: ex-uclcmd
-
-...
+      ansible.builtin.import_tasks: tasks/ex-uclcmd.yml

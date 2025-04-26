@@ -2,14 +2,14 @@
 
   # Best practice - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   #
-  # shell> ANSIBLE_STDOUT_CALLBACK=yaml \
+  # shell> ANSIBLE_CALLBACK_RESULT_FORMAT=yaml \
   #        ANSIBLE_DISPLAY_SKIPPED_HOSTS=false \
   #        ANSIBLE_DISPLAY_OK_HOSTS=false \
   #        ansible-playbook tests-ucl.yml -e 'debug1=true test_ucl=test_ucl' -CD
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 - name: All Ansible tests. Known problems disabled.
-  hosts: "{{ test_ucl|default('localhost') }}"
+  hosts: "{{ test_ucl | d('localhost') }}"
   gather_facts: false
 
   vars:
@@ -76,6 +76,6 @@
 
   tasks:
 
-    - import_tasks: tasks/main.yml
+    - ansible.builtin.import_tasks: tasks/main.yml
 
 # EOF
