@@ -20,7 +20,7 @@ Errors
 Current status
 ==============
 
-shell> ansible-playbook tests-ucl.yml -e 'test_ucl=test_ucl debug1=true' -C
+shell> ansible-playbook tests-ucl.yml -e debug1=true -C
 
   msg: |-
     [OK]  0 get_01.ansible

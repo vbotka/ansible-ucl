@@ -67,18 +67,20 @@
       {{ item.stdout }}
       - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   ansible.builtin.debug:
-    msg: "{{ msg.split('\n') }}"
+    msg: "{{ msg | split('\n') }}"
   loop: "{{ tests_diff.results }}"
   loop_control:
     label: "{{ item.item.item.key }}"
 
 - name: Debug1 tests_diff results.
   when: debug1 | d(false) | bool
-  ansible.builtin.debug:
+  vars:
     msg: |-
       {% for i in tests_diff.results %}
       {% if i.rc == 0 %}[OK] {% else %}[ERR]{% endif %} {{ i.rc }} {{ i.item.item.key | basename }}
       {% endfor %}
+  ansible.builtin.debug:
+    msg: "{{ msg | split('\n') }}"
 
 - name: Assert failed tests
   vars:
