@@ -16,7 +16,6 @@ Errors
     ...
   new = 1103760000.0;
 
-
 Current status
 ==============
 
@@ -67,33 +66,29 @@ TASK [ansible.builtin.assert] *************************************************
 ok: [host1] => changed=false 
   msg: '[OK]  *** All Tests Passed. ***'
 
-
 Results
 =======
 
-The results of testing Ansible module ucl are in the first
-section. Last two sections comprise the setup instructions for the
-client and controller.
-
+The results of testing Ansible module ucl are in the first section. Last two
+sections comprise the setup instructions for the client and controller.
 
 Test module ucl
 ---------------
 
-Run separate groups of the tests (get, set, merge, ...) with options
-"--check --diff" (equivalent of -CD). The option -C prevents changes
-of the tested data. If you run the tests without the option -C the
-tested data will be changed and the following tests will crash. Go to
-the repo at the remote host and checkout the origin. You'll be
-reminded by the playbook to use the check mode. Optionally disable it
-by "-e no_check=True"
+Run separate groups of the tests (get, set, merge, ...) with options "--check
+--diff" (equivalent of -CD). The option -C prevents changes of the tested
+data. If you run the tests without the option -C the tested data will be changed
+and the following tests will crash. Go to the repo at the remote host and
+checkout the origin. You'll be reminded by the playbook to use the check
+mode. Optionally, disable it by "-e no_check=True"
 
-The option -D is optional. If used you'll see unified diffs of
-the before/after data on the fly.
+If the option -D is used you'll see unified diffs of the before/after data on
+the fly.
 
   shell> pwd
   /scratch/ansible-ucl
 
-  shell> ansible-playbook run-tests.yml -t tests-module -e 'patterns=get.in debug1=true test_ucl=test_ucl' -C
+  shell> ansible-playbook run-tests.yml -t tests-module -e patterns=get.in -e debug1=true -C
   ...
   msg: |-
     [OK]  0 get_01.ansible
@@ -105,7 +100,7 @@ the before/after data on the fly.
   msg: |-
     [OK]  *** All Tests Passed ***
 
-  shell> ansible-playbook run-tests.yml -t tests-module -e 'patterns=set.in debug1=true test_ucl=test_ucl' -C
+  shell> ansible-playbook run-tests.yml -t tests-module -e patterns=set.in -e debug1=true -C
   ...
   msg: |-
     [OK]  0 set_01.ansible
@@ -121,7 +116,7 @@ the before/after data on the fly.
   msg: |-
     [OK]  *** All Tests Passed ***
 
-  shell> ansible-playbook run-tests.yml -t tests-module -e 'patterns=merge.in debug1=true test_ucl=test_ucl' -C
+  shell> ansible-playbook run-tests.yml -t tests-module -e patterns=merge.in -e debug1=true -C
   ...
   msg: |-
     [OK]  0 merge_01.ansible
@@ -145,7 +140,6 @@ the before/after data on the fly.
   shell> ansible-playbook run-tests.yml -t tests-module -e 'patterns=include-*.in debug1=true test_ucl=test_ucl' -C
   msg: '[ERR] *** 1 Test(s) Failed. ***'
 
-
 Errors
 ------
 
@@ -168,7 +162,7 @@ Errors
     icontent: "{{ lookup('file', tests_dir_local ~ '/merge_09.ucl') }}"
 
   Works fine if *icontent* is assign 'directly'.
-  shell> ansible-playbook run-tests.yml -t test-merge-9 -e 'debug1=true test_ucl=test_ucl' -CD
+  shell> ansible-playbook run-tests.yml -t test-merge-9 -e debug1=true -CD
 
 --- before: /scratch/uclcmd/tests/merge.in (content)
 +++ after: /scratch/uclcmd/tests/merge.in (content)
@@ -192,7 +186,6 @@ Errors
 +       key = "new";
 +   }
 
-
 Test uclcmd command
 -------------------
 
@@ -201,7 +194,7 @@ stdout results of the commands to the files /tmp/*.tmp. These files,
 instead of the data.out, are compared to the expected results
 tests/*.res.
 
-shell> ansible-playbook tests-cmd.yml -e 'debug1=true test_ucl=test_ucl'
+shell> ansible-playbook tests-cmd.yml -e debug1=true
 
 ok: [host1] => 
   msg: |-
@@ -252,7 +245,6 @@ The same tests failed by running the script directly at the client
   Test[include-merge-low_01] Failed. did not match.
   Test[set_08] Failed. did not match.
 
-
 Other examples
 ==============
 
@@ -280,18 +272,16 @@ See available tags. There are other examples tagged ex-*.
        test-set-8, test-set-9, tests-command, tests-module,
        tests-module-include, tests-module-merge, tests-module-set]
 
-
 Troubleshooting
 ===============
 
 * Turn on debugging output, e.g.
 
-  shell> ANSIBLE_DEBUG=true ansible-playbook run-tests.yml -t tests-module -e 'patterns=get.in debug1=true test_ucl=test_ucl' -CD
+  shell> ANSIBLE_DEBUG=true ansible-playbook run-tests.yml -t tests-module -e patterns=get.in -e debug1=true -CD
 
-* Make sure the data int the directory *tests* hasn't been changed. Refresh it
+* Make sure the data in the directory *tests* hasn't been changed. Refresh it
 
-  shell> ansible-playbook run-tests.yml -e 'test_ucl=test_ucl download_tests=true debug=true'
-
+  shell> ansible-playbook run-tests.yml -e download_tests=true -e debug=true
 
 Client setup (remote host)
 ==========================
@@ -305,17 +295,14 @@ Client setup (remote host)
 
 * Create the local copy of the *tests*
 
-  shell> ansible-playbook run-tests.yml -e 'test_ucl=test_ucl download_tests=true debug=true'
-
+  shell> ansible-playbook run-tests.yml -e test_ucl=test_ucl -e download_tests=true -e debug=true
 
 Controller setup (localhost)
 ============================
 
-
 Install Ansible
 ---------------
 <TBD>
-
 
 Clone ansible-ucl
 -----------------
@@ -329,7 +316,6 @@ shell> git remote -v
 origin https://github.com/vbotka/ansible-ucl.git (fetch)
 origin https://github.com/vbotka/ansible-ucl.git (push)
 
-
 Install requirements
 --------------------
 
@@ -337,12 +323,10 @@ shell> pwd
 /scratch/ansible-ucl
 shell> ansible-galaxy collection install -r requirements.yml
 
-
 Create the local copy of the *tests*
 -----------------------------------
 
-shell> ansible-playbook run-tests.yml -e 'test_ucl=test_ucl download_tests=true debug=true'
-
+shell> ansible-playbook run-tests.yml -e test_ucl=test_ucl -e download_tests=true -e debug=true
 
 Clone vbotka.ansible.community.general
 --------------------------------------
@@ -361,11 +345,9 @@ origin	     https://github.com/vbotka/community.general.git (push)
 upstream     https://github.com/ansible-collections/community.general.git (fetch)
 upstream     https://github.com/ansible-collections/community.general.git (push)
 
-
 Copy module ucl.py to community.general
 ---------------------------------------
 <TBD>
-
 
 Configure Ansible path to modules, utils, and filters
 -----------------------------------------------------
@@ -374,7 +356,6 @@ shell> pwd
 
 shell> grep community.general ansible.cfg
 library = /scratch/dev/ansible/collections/ansible_collections/community/general/plugins/modules/:$PWD/library:/usr/share/ansible/plugins/modules
-
 
 Fit Ansible inventory and test connection
 -----------------------------------------
@@ -399,11 +380,8 @@ ansible_perl_interpreter=/usr/local/bin/perl
 shell> ansible host1 -m setup | grep ansible_kernel_version
         "ansible_kernel_version": "FreeBSD 13.0-RELEASE #0 ...
 
-
-
 Update variables of the playbook to your setting
 ------------------------------------------------
-
 
 Test syntax of the playbook
 ---------------------------
@@ -413,6 +391,5 @@ shell> pwd
 shell> ansible-playbook run-tests.yml --syntax-check
 
 playbook: run_tests.yml
-
 
 # EOF
