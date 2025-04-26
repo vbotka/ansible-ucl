@@ -2,18 +2,19 @@
 
   # msg: File /etc/pkg/FreeBSD.conf; Command get executed.
 - name: No error. Get missing upath. rc=0
+  tags: ex-get-1-err
   block:
     - ucl:
         path: /etc/pkg/FreeBSD.conf
         upath: freebsd.foo
       register: result
-    - debug:
+    - ansible.builtin.debug:
         var: result
-      when: debug|default(false)|bool
-  tags: ex-get-1-err
+      when: debug | d(false) | bool
 
   # stderr: Failed to find destination node: freebsd.foo.bar
 - name: Error. Set missing upath. rc=1
+  tags: ex-set-1-err
   block:
     - ucl:
         path: /etc/pkg/FreeBSD.conf
@@ -21,7 +22,6 @@
         value: bar
       register: result
       ignore_errors: true
-    - debug:
+    - ansible.builtin.debug:
         var: result
-      when: debug|default(false)|bool
-  tags: ex-set-1-err
+      when: debug | d(false) | bool

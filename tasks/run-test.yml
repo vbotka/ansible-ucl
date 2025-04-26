@@ -12,71 +12,80 @@
 #   debug3 ............. Intermediary results more details
 #   debug4 ............. Details of each failed tests
 
-- name: "Find all tests for {{ test_in|default('') }} and {{ group }}"
+- name: "Find all tests for {{ test_in | d('') }} and {{ group }}"
+  when: test_in | d('') | length > 0
   block:
-    - ansible.builtin.find:
-        path: "{{ tests_dir_local }}"
-        patterns: "{{ (test_in|basename|splitext).0 }}_*.{{ group }}"
+
+    - name: Find groups.
       register: tests_ansible
       delegate_to: localhost
-    - ansible.builtin.set_fact:
-        tests_files: "{{ {test_in|basename: tests_ansible.files|
-                                            map(attribute='path')|
-                                            map('basename')|
-                                            sort} }}"
-      when: tests_ansible.files|length > 0
-  when: test_in|default('')|length > 0
+      ansible.builtin.find:
+        path: "{{ tests_dir_local }}"
+        patterns: "{{ test_in | basename | splitext | first }}_*.{{ group }}"
 
-- ansible.builtin.assert:
+    - name: Set tests_files.
+      when: tests_ansible.files | length > 0
+      vars:
+        tests_files_key: "{{ test_in | basename }}"
+        tests_files_val: "{{ tests_ansible.files | map(attribute='path')
+                                                 | map('basename')
+                                                 | sort }}"
+      ansible.builtin.set_fact:
+        tests_files: "{{ {tests_files_key: tests_files_val} }}"
+
+- name: Assert tests_files.
+  ansible.builtin.assert:
     that: tests_files is defined
     fail_msg: '[ERR] The dictionary *tests_files* does not exist.'
 
-- ansible.builtin.debug:
+- name: Debug2 tests_files.
+  when: debug2 | d(false) | bool
+  ansible.builtin.debug:
     var: tests_files
-  when: debug2|default(false)|bool
 
-  # Run test
+- name: Run test group.
+  ansible.builtin.import_tasks: "tasks/run-test-{{ group }}.yml"
 
-- ansible.builtin.import_tasks: "tasks/run-test-{{ group }}.yml"
-
-  # Display results
-
-- ansible.builtin.debug:
+- name: Debug2 tests_diff
+  when: debug2 | d(false) | bool
+  ansible.builtin.debug:
     var: tests_diff
-  when: debug2|default(false)|bool
 
-- ansible.builtin.debug:
-    msg: "{{ msg.split('\n') }}"
-  loop: "{{ tests_diff.results }}"
-  loop_control:
-    label: "{{ item.item.item.key }}"
+- name: Debug4 tests_diff results.
+  when:
+    - debug4 | d(false) | bool
+    - item.rc != 0
   vars:
     msg: |-
       = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
       [ERR] {{ item.item.item.key }}
       - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      {{ item.item.invocation.module_args|to_nice_yaml }}
+      {{ item.item.invocation.module_args | to_nice_yaml }}
       - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       {{ item.invocation.module_args._raw_params }}
       - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       {{ item.stdout }}
       - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  when:
-    - debug4|default(false)|bool
-    - item.rc != 0
+  ansible.builtin.debug:
+    msg: "{{ msg | split('\n') }}"
+  loop: "{{ tests_diff.results }}"
+  loop_control:
+    label: "{{ item.item.item.key }}"
 
-- ansible.builtin.debug:
+- name: Debug1 tests_diff results.
+  when: debug1 | d(false) | bool
+  vars:
     msg: |-
       {% for i in tests_diff.results %}
-      {% if i.rc == 0 %}[OK] {% else %}[ERR]{% endif %} {{ i.rc }} {{ i.item.item.key|basename }}
+      {% if i.rc == 0 %}[OK] {% else %}[ERR]{% endif %} {{ i.rc }} {{ i.item.item.key | basename }}
       {% endfor %}
-  when: debug1|default(false)|bool
+  ansible.builtin.debug:
+    msg: "{{ msg | split('\n') }}"
 
-- ansible.builtin.assert:
-    that: failed_tests|int == 0
-    fail_msg: '[ERR] *** {{ failed_tests }} Test(s) Failed. ***'
-    success_msg: '[OK]  *** All Tests Passed. ***'
+- name: Assert failed tests
   vars:
-    failed_tests: "{{ tests_diff.results|selectattr('rc', 'ne', 0)|list|length }}"
-
-...
+    failed_tests: "{{ tests_diff.results | selectattr('rc', 'ne', 0) | list }}"
+  ansible.builtin.assert:
+    that: failed_tests | length == 0
+    fail_msg: '[ERR] *** {{ failed_tests | length }} test(s) failed. ***'
+    success_msg: '[OK]  *** All tests passed. ***'

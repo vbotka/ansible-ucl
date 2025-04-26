@@ -1,6 +1,8 @@
 ---
 
-- block:
+- name: SET-1
+  tags: test-set-1
+  block:
     - ucl:
         path: "{{ tests_dir }}/set.in"
         upath: "rootkey.subkey.key"
@@ -10,10 +12,11 @@
         msg: "{{ msg.splitlines() }}"
       vars:
         msg: |-
-          {{ result|to_nice_yaml }}
-  tags: test-set-1
+          {{ result | to_nice_yaml }}
 
-- block:
+- name: SET-2
+  tags: test-set-2
+  block:
     - ucl:
         path: "{{ tests_dir }}/set.in"
         upath: "rootkey.array.1"
@@ -23,10 +26,11 @@
         msg: "{{ msg.splitlines() }}"
       vars:
         msg: |-
-          {{ result|to_nice_yaml }}
-  tags: test-set-2
+          {{ result | to_nice_yaml }}
 
-- block:
+- name: SET-3
+  tags: test-set-3
+  block:
     - ucl:
         path: "{{ tests_dir }}/set.in"
         upath: "rootkey.subkey"
@@ -36,10 +40,11 @@
         msg: "{{ msg.splitlines() }}"
       vars:
         msg: |-
-          {{ result|to_nice_yaml }}
-  tags: test-set-3
+          {{ result | to_nice_yaml }}
 
-- block:
+- name: SET-4
+  tags: test-set-4
+  block:
     - ucl:
         path: "{{ tests_dir }}/set.in"
         upath: "rootkey.array"
@@ -49,10 +54,11 @@
         msg: "{{ msg.splitlines() }}"
       vars:
         msg: |-
-          {{ result|to_nice_yaml }}
-  tags: test-set-4
+          {{ result | to_nice_yaml }}
 
-- block:
+- name: SET-5
+  tags: test-set-5
+  block:
     - ucl:
         path: "{{ tests_dir }}/set.in"
         upath: "rootkey.array"
@@ -62,10 +68,11 @@
         msg: "{{ msg.splitlines() }}"
       vars:
         msg: |-
-          {{ result|to_nice_yaml }}
-  tags: test-set-5
+          {{ result | to_nice_yaml }}
 
-- block:
+- name: SET-6
+  tags: test-set-6
+  block:
     - ucl:
         path: "{{ tests_dir }}/set.in"
         upath: "rootkey.new"
@@ -75,10 +82,11 @@
         msg: "{{ msg.splitlines() }}"
       vars:
         msg: |-
-          {{ result|to_nice_yaml }}
-  tags: test-set-6
+          {{ result | to_nice_yaml }}
 
-- block:
+- name: SET-7
+  tags: test-set-7
+  block:
     - ucl:
         path: "{{ tests_dir }}/set.in"
         upath: "rootkey.new"
@@ -88,10 +96,11 @@
         msg: "{{ msg.splitlines() }}"
       vars:
         msg: |-
-          {{ result|to_nice_yaml }}
-  tags: test-set-7
+          {{ result | to_nice_yaml }}
 
-- block:
+- name: SET-8
+  tags: test-set-8
+  block:
     - ucl:
         path: "{{ tests_dir }}/set.in"
         upath: "rootkey.new"
@@ -101,10 +110,11 @@
         msg: "{{ msg.splitlines() }}"
       vars:
         msg: |-
-          {{ result|to_nice_yaml }}
-  tags: test-set-8
+          {{ result | to_nice_yaml }}
 
-- block:
+- name: SET-9
+  tags: test-set-9
+  block:
     - ucl:
         path: "{{ tests_dir }}/set.in"
         upath: "rootkey.new"
@@ -114,10 +124,11 @@
         msg: "{{ msg.splitlines() }}"
       vars:
         msg: |-
-          {{ result|to_nice_yaml }}
-  tags: test-set-9
+          {{ result | to_nice_yaml }}
 
-- block:
+- name: SET-10
+  tags: test-set-10
+  block:
     - ucl:
         path: "{{ tests_dir }}/set.in"
         upath: "rootkey.new"
@@ -128,5 +139,4 @@
         msg: "{{ msg.splitlines() }}"
       vars:
         msg: |-
-          {{ result|to_nice_yaml }}
-  tags: test-set-10
+          {{ result | to_nice_yaml }}

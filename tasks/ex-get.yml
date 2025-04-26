@@ -1,6 +1,8 @@
 ---
 
-- block:
+- name: GET-1
+  tags: ex-get-1
+  block:
     - ucl:
         path: /etc/pkg/FreeBSD.conf
         upath: .
@@ -9,26 +11,28 @@
         msg: "{{ msg.splitlines() }}"
       vars:
         msg: |-
-          {{ result|to_nice_yaml }}
-      when: debug|default(false)|bool
-  tags: ex-get-1
+          {{ result | to_nice_yaml }}
+      when: debug | d(false) | bool
 
-- block:
+- name: GET-2
+  tags: ex-get-2
+  block:
     - ucl:
         path: /etc/pkg/FreeBSD.conf
         upath: freebsd.url
       register: result
-    - set_fact:
+    - ansible.builtin.set_fact:
         freebsd_url: "{{ result.stdout }}"
     - ansible.builtin.debug:
         msg: "{{ msg.splitlines() }}"
       vars:
         msg: |-
-          {{ result|to_nice_yaml }}
-      when: debug|default(false)|bool
-  tags: ex-get-2
+          {{ result | to_nice_yaml }}
+      when: debug | d(false) | bool
 
-- block:
+- name: GET-3
+  tags: ex-get-3
+  block:
     - ucl:
         path: /etc/pkg/FreeBSD.conf
         lang: yaml
@@ -37,6 +41,5 @@
         msg: "{{ msg.splitlines() }}"
       vars:
         msg: |-
-          {{ result|to_nice_yaml }}
-      when: debug|default(false)|bool
-  tags: ex-get-3
+          {{ result | to_nice_yaml }}
+      when: debug | d(false) | bool

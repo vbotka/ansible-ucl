@@ -3,7 +3,7 @@ inventory = $PWD/hosts
 roles_path = $PWD/roles
 collections_path = $PWD/collections
 retry_files_enabled = false
-stdout_callback = yaml
+callback_result_format = yaml
 log_path = /var/log/ansible.log
 
 [ssh_connection]

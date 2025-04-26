@@ -14,7 +14,7 @@
 
 - ansible.builtin.debug:
     var: result
-  when: debug|default(false)|bool
+  when: debug | d(false) | bool
 
 - ansible.builtin.debug:
     msg: "{{ item.stdout }}"

@@ -1,6 +1,8 @@
 ---
 
-- block:
+- name: INC-APP-HIGH
+  tags: test-inc-app-high
+  block:
     - ucl:
         path: "{{ tests_dir }}/include-append-high.in"
         chdir: /scratch/uclcmd
@@ -9,10 +11,11 @@
         msg: "{{ msg.splitlines() }}"
       vars:
         msg: |-
-          {{ result|to_nice_yaml }}
-  tags: test-inc-app-high
+          {{ result | to_nice_yaml }}
 
-- block:
+- name: INC-APP-LOW
+  tags: test-inc-app-low
+  block:
     - ucl:
         path: "{{ tests_dir }}/include-append-low.in"
         chdir: /scratch/uclcmd
@@ -21,10 +24,11 @@
         msg: "{{ msg.splitlines() }}"
       vars:
         msg: |-
-          {{ result|to_nice_yaml }}
-  tags: test-inc-app-low
+          {{ result | to_nice_yaml }}
 
-- block:
+- name: INC-APP-SAME
+  tags: test-inc-app-same
+  block:
     - ucl:
         path: "{{ tests_dir }}/include-append-same.in"
         chdir: /scratch/uclcmd
@@ -33,19 +37,21 @@
         msg: "{{ msg.splitlines() }}"
       vars:
         msg: |-
-          {{ result|to_nice_yaml }}
-  tags: test-inc-app-same
+          {{ result | to_nice_yaml }}
 
-- block:
+- name: INC-ERR
+  tags: test-inc-err
+  block:
     - ucl:
         path: "{{ tests_dir }}/include-error.in"
         chdir: /scratch/uclcmd
   rescue:
     - ansible.builtin.debug:
         msg: "{{ ansible_failed_result.stderr }}"
-  tags: test-inc-err
 
-- block:
+- name: MERGE-HIGH
+  tags: test-merge-high
+  block:
     - ucl:
         path: "{{ tests_dir }}/include-merge-high.in"
         chdir: /scratch/uclcmd
@@ -54,10 +60,11 @@
         msg: "{{ msg.splitlines() }}"
       vars:
         msg: |-
-          {{ result|to_nice_yaml }}
-  tags: test-merge-high
+          {{ result | to_nice_yaml }}
 
-- block:
+- name: MERGE-LOW
+  tags: test-merge-low
+  block:
     - ucl:
         path: "{{ tests_dir }}/include-merge-low.in"
         chdir: /scratch/uclcmd
@@ -66,10 +73,11 @@
         msg: "{{ msg.splitlines() }}"
       vars:
         msg: |-
-          {{ result|to_nice_yaml }}
-  tags: test-merge-low
+          {{ result | to_nice_yaml }}
 
-- block:
+- name: MERGE-SAME
+  tags: test-merge-same
+  block:
     - ucl:
         path: "{{ tests_dir }}/include-merge-same.in"
         chdir: /scratch/uclcmd
@@ -78,10 +86,11 @@
         msg: "{{ msg.splitlines() }}"
       vars:
         msg: |-
-          {{ result|to_nice_yaml }}
-  tags: test-merge-same
+          {{ result | to_nice_yaml }}
 
-- block:
+- name: RWRT-HIGH
+  tags: test-rwrt-high
+  block:
     - ucl:
         path: "{{ tests_dir }}/include-rewrite-high.in"
         chdir: /scratch/uclcmd
@@ -90,10 +99,11 @@
         msg: "{{ msg.splitlines() }}"
       vars:
         msg: |-
-          {{ result|to_nice_yaml }}
-  tags: test-rwrt-high
+          {{ result | to_nice_yaml }}
 
-- block:
+- name: RWRT-LOW
+  tags: test-rwrt-low
+  block:
     - ucl:
         path: "{{ tests_dir }}/include-rewrite-low.in"
         chdir: /scratch/uclcmd
@@ -102,10 +112,11 @@
         msg: "{{ msg.splitlines() }}"
       vars:
         msg: |-
-          {{ result|to_nice_yaml }}
-  tags: test-rwrt-low
+          {{ result | to_nice_yaml }}
 
-- block:
+- name: rwrt-same
+  tags: test-rwrt-same
+  block:
     - ucl:
         path: "{{ tests_dir }}/include-rewrite-same.in"
         chdir: /scratch/uclcmd
@@ -114,7 +125,6 @@
         msg: "{{ msg.splitlines() }}"
       vars:
         msg: |-
-          {{ result|to_nice_yaml }}
-  tags: test-rwrt-same
+          {{ result | to_nice_yaml }}
 
 # EOF

@@ -1,10 +1,10 @@
 ---
 
 # Example
-# shell> ansible-playbook tests-ucl-devel.yml -e 'debug1=true test_ucl=test_ucl' -CD
+# shell> ansible-playbook tests-ucl-devel.yml -e debug1=true -CD
 
 - name: Manually selected Ansible tests.
-  hosts: "{{ test_ucl|default('localhost') }}"
+  hosts: "{{ test_ucl | d('localhost') }}"
   gather_facts: false
 
   vars:
@@ -70,7 +70,9 @@
 
   tasks:
 
-    - assert:
+    - name: Assert check mode.
+      when: not no_check | d(false) | bool
+      ansible.builtin.assert:
         that: ansible_check_mode
         fail_msg: |
           You are running the playbook without option --check or
@@ -78,6 +80,5 @@
           directory tests. You will have to restore the files to prevent
           other tests from crashing. Disable this message by setting the
           option '-e no_check=True'.
-      when: not no_check|default(False)|bool
 
-    - import_tasks: tasks/run-test.yml
+    - ansible.builtin.import_tasks: tasks/run-test.yml
