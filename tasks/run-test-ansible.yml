@@ -1,29 +1,29 @@
 ---
 
-  # Create dictionary that will control the tests
+- name: Create dictionary that will control the tests.
+  block:
 
-- ansible.builtin.set_fact:
-    _tests: {}
+    - name: Create empty dictionary _tests
+      ansible.builtin.set_fact:
+        _tests: {}
 
-- name: Create dictionary _tests
-  vars:
-    _test_key: "{{ item.1 }}"
-    _test_val: "{{ dict(['in', 'mod', 'res'] | zip([_in, _mod, _res])) }}"
-    _in: "{{ tests_dir }}/{{ item.0.key }}"
-    _mod: "{{ lookup('template', tests_dir_local ~ '/' ~ item.1) | from_yaml }}"
-    _res: "{{ tests_dir_local }}/{{ item.1 | splitext | first }}.res"
-  ansible.builtin.set_fact:
-    _tests: "{{ _tests | combine({_test_key: _test_val}) }}"
-  loop: "{{ tests_files | dict2items | subelements('value') }}"
+    - name: Create dictionary _tests
+      vars:
+        _test_key: "{{ item.1 }}"
+        _test_val: "{{ dict(['in', 'mod', 'res'] | zip([_in, _mod, _res])) }}"
+        _in: "{{ tests_dir }}/{{ item.0.key }}"
+        _mod: "{{ lookup('template', tests_dir_local ~ '/' ~ item.1) | from_yaml }}"
+        _res: "{{ tests_dir_local }}/{{ item.1 | splitext | first }}.res"
+      ansible.builtin.set_fact:
+        _tests: "{{ _tests | combine({_test_key: _test_val}) }}"
+      loop: "{{ tests_files | dict2items | subelements('value') }}"
 
-- name: Debug2 tests
-  when: debug2 | d(false) | bool
-  ansible.builtin.debug:
-    var: _tests
+    - name: Debug2 tests
+      when: debug2 | d(false) | bool
+      ansible.builtin.debug:
+        var: _tests
 
-  # Run the tests and optionally display the results
-
-- name: Run
+- name: Run the tests.
   block:
 
     - name: Run module ucl
@@ -50,14 +50,14 @@
 
   rescue:
 
-    - name: Debug2 tests failed.
+    - name: Debug tests failed.
       ansible.builtin.debug:
-        msg: "[ERR] Some of the tests failed. See debug2,3 for details."
+        msg: "[ERR] Some of the tests failed. See debug2,3,5 for details."
 
-    - name: Debug2 result.
-      when: debug2 | d(false) | bool
-      ansible.builtin.debug:
-        msg: "{{ ansible_failed_result }}"
+- name: Debug2 result.
+  when: debug2 | d(false) | bool
+  ansible.builtin.debug:
+    msg: "{{ ansible_failed_result }}"
 
 - name: Debug3 tests_res
   when: debug3 | d(false) | bool
@@ -78,8 +78,6 @@
   loop: "{{ tests_res.results }}"
   loop_control:
     label: "{{ item.item.key }}"
-
-  # Compare results
 
 - name: Diff results # noqa: command-instead-of-shell
   vars:

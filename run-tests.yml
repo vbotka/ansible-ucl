@@ -1,8 +1,9 @@
 ---
 
 # Best practice
-# shell> ansible-playbook run-tests.yml -e 'test_ucl=test_ucl download_tests=true debug=true'
-# shell> ansible-playbook run-tests.yml -e 'test_ucl=test_ucl debug=true' -t ex-set -CD
+# shell> ansible-playbook run-tests.yml -e download_tests=true -e debug=true
+# shell> ansible-playbook run-tests.yml -e patch_tests=true -e debug=true
+# shell> ansible-playbook run-tests.yml -t ex-set -e debug=true -CD
 
 - name: Collection of tests.
   hosts: "{{ test_ucl | default('localhost') }}"
@@ -19,7 +20,12 @@
   tasks:
 
     - name: Download tests and exit.
+      when: download_tests | d(false) | bool
       ansible.builtin.import_tasks: tasks/download-tests.yml
+
+    - name: Patch tests and exit.
+      when: patch_tests | d(false) | bool
+      ansible.builtin.import_tasks: tasks/patch-tests.yml
 
     - name: Sanity
       block:

@@ -1,69 +1,65 @@
 ---
-- name: Download tests
-  when: download_tests | d(false) | bool
-  block:
+- name: "Create dirs at localhost."
+  delegate_to: localhost
+  ansible.builtin.file:
+    state: directory
+    path: "{{ item }}"
+    mode: "0755"
+  loop:
+    - "{{ playbook_dir }}/uclcmd"
+    - "{{ playbook_dir }}/tests"
 
-    - name: "Create dirs at localhost."
-      delegate_to: localhost
-      ansible.builtin.file:
-        state: directory
-        path: "{{ item }}"
-        mode: "0755"
-      loop:
-        - "{{ playbook_dir }}/uclcmd"
-        - "{{ playbook_dir }}/tests"
+- name: "Create dirs at {{ inventory_hostname }}"
+  ansible.builtin.file:
+    state: directory
+    path: "{{ item }}"
+    mode: "0755"
+  loop:
+    - "{{ run_dir }}"
+    - "{{ tests_dir }}"
 
-    - name: "Create dirs at {{ inventory_hostname }}"
-      ansible.builtin.file:
-        state: directory
-        path: "{{ item }}"
-        mode: "0755"
-      loop:
-        - "{{ run_dir }}"
-        - "{{ tests_dir }}"
+- name: "Clone uclcmd_git at localhost." # noqa: latest[git]
+  register: result
+  delegate_to: localhost
+  ansible.builtin.git:
+    repo: "{{ uclcmd_git }}"
+    dest: "{{ playbook_dir }}/uclcmd"
 
-    - name: "Clone uclcmd_git at localhost." # noqa: latest[git]
-      register: result
-      delegate_to: localhost
-      ansible.builtin.git:
-        repo: "{{ uclcmd_git }}"
-        dest: "{{ playbook_dir }}/uclcmd"
+- name: "Debug result."
+  when: debug | d(false) | bool
+  ansible.builtin.debug:
+    var: result
 
-    - name: "Debug result."
-      when: debug | d(false) | bool
-      ansible.builtin.debug:
-        var: result
+- name: "Sync tests to localhost:playbook_dir/tests" # noqa: command-instead-of-module
+  register: result
+  changed_when: result.stdout_lines | length > 0
+  delegate_to: localhost
+  ansible.builtin.command: "rsync -rci {{ item }} {{ playbook_dir }}/tests"
+  loop:
+    - "{{ playbook_dir }}/uclcmd/tests/"
+    - "{{ playbook_dir }}/tests.ansible/"
 
-    - name: "Sync tests to localhost:playbook_dir/tests" # noqa: command-instead-of-module
-      register: result
-      changed_when: result.stdout_lines|length > 0
-      delegate_to: localhost
-      ansible.builtin.command: "rsync -rci {{ item }} {{ playbook_dir }}/tests"
-      loop:
-        - "{{ playbook_dir }}/uclcmd/tests/"
-        - "{{ playbook_dir }}/tests.ansible/"
+- name: "Debug result."
+  when: debug | d(false) | bool
+  ansible.builtin.debug:
+    var: result
 
-    - name: "Debug result."
-      when: debug | d(false) | bool
-      ansible.builtin.debug:
-        var: result
+- name: "Sync {{ playbook_dir }}/uclcmd/tests/ to {{ inventory_hostname }}:{{ tests_dir }}"
+  register: result
+  ansible.posix.synchronize:
+    archive: false
+    rsync_opts:
+      - --recursive
+      - --checksum
+    src: "{{ item }}"
+    dest: "{{ tests_dir }}"
+  loop:
+    - "{{ playbook_dir }}/uclcmd/tests/"
+    - "{{ playbook_dir }}/tests.ansible/"
 
-    - name: "Sync {{ playbook_dir }}/uclcmd/tests/ to {{ inventory_hostname }}:{{ tests_dir }}"
-      register: result
-      ansible.posix.synchronize:
-        archive: false
-        rsync_opts:
-          - --recursive
-          - --checksum
-        src: "{{ item }}"
-        dest: "{{ tests_dir }}"
-      loop:
-        - "{{ playbook_dir }}/uclcmd/tests/"
-        - "{{ playbook_dir }}/tests.ansible/"
+- name: "Debug result."
+  when: debug | d(false) | bool
+  ansible.builtin.debug:
+    var: result
 
-    - name: "Debug result."
-      when: debug | d(false) | bool
-      ansible.builtin.debug:
-        var: result
-
-    - ansible.builtin.meta: end_play
+- ansible.builtin.meta: end_play
