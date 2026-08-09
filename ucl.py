@@ -1,6 +1,3 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
-
 # Copyright 2021, Vladimir Botka <vbotka@gmail.com>
 #
 # Redistribution and use in source and binary forms, with or without
@@ -26,21 +23,22 @@
 
 # SPDX-License-Identifier: BSD-2-Clause
 
-from __future__ import absolute_import, division, print_function
-__metaclass__ = type
+from __future__ import annotations
 
-
-DOCUMENTATION = r'''
+DOCUMENTATION = r"""
 module: ucl
 short_description: Manage FreeBSD UCL config files
+version_added: 0.6.11
+author:
+  - Vladimir Botka (@vbotka)
+requirements:
+  - uclcmd >= 0.1_3
+  - libucl >= 0.8.1
 description: A CRUD-like interface for managing UCL files.
-version_added: '0.6.11'
-
 extends_documentation_fragment:
   - ansible.builtin.files
   - ansible.builtin.validate
   - ansible.builtin.backup
-
 options:
   path:
     description:
@@ -130,11 +128,6 @@ options:
         the original file back if you somehow clobbered it incorrectly.
     type: bool
     default: false
-
-requirements:
-  - uclcmd >= 0.1_3
-  - libucl >= 0.8.1
-
 notes:
   - Supports C(check_mode).
   - The check mode will fail if O(path) is missing even when I(create=yes).
@@ -146,7 +139,6 @@ notes:
     B(difflib.unified_diff). The command B(uclcmd) will not be executed if this
     function does not find any changes between the content of O(path) and the
     stdout of the dry-run command B(uclcmd).
-
 seealso:
   - name: FreeBSD Universal Configuration Language
     description: Wiki
@@ -160,11 +152,9 @@ seealso:
   - name: Source code libucl macros
     description: Macros support
     link: https://github.com/vstakhov/libucl/#macros-support
+"""
 
-author: "Vladimir Botka (@vbotka)"
-'''
-
-EXAMPLES = r'''
+EXAMPLES = r"""
 - name: Get FreeBSD repository of packages
   ucl:
     path: /etc/pkg/FreeBSD.conf
@@ -218,9 +208,9 @@ EXAMPLES = r'''
     path: /foo/bar.conf
     upath: rootkey.subkey.key
     state: absent
-'''
+"""
 
-RETURN = r'''
+RETURN = r"""
 cmd:
   description: Run string of B(uclcmd).
   returned: always
@@ -246,11 +236,10 @@ msg:
   returned: always
   type: str
   sample: 'File: /etc/pkg/FreeBSD.conf; uclcmd: /usr/local/bin/uclcmd; Command get executed.'
-'''
+"""
 
 # TODO: DOCUMENTATION. Get rid of the SELinux stuff included by the
 # extended documentation fragments if possible.
-
 
 import difflib
 import json
@@ -259,7 +248,6 @@ import tempfile
 
 from ansible.module_utils.basic import AnsibleModule, env_fallback, is_executable, json_dict_bytes_to_unicode
 from ansible.module_utils._text import to_bytes, to_native
-
 
 # Global variables
 ucl_created = False
@@ -270,7 +258,7 @@ ucl_attr_diff = {}
 
 
 def get_value(module, uclcmd, options):
-    """ Get value of upath from path. """
+    """Get value of upath from path."""
 
     global ucl_message
 
@@ -292,7 +280,7 @@ def get_value(module, uclcmd, options):
 
 
 def set_value(module, uclcmd, options):
-    """ Set value of upath in path. Optionally merge the values. """
+    """Set value of upath in path. Optionally merge the values."""
 
     global ucl_message
 
@@ -372,7 +360,7 @@ def set_value(module, uclcmd, options):
 
 
 def remove_upath(module, uclcmd, options):
-    """ Remove upath from path. """
+    """Remove upath from path."""
 
     global ucl_message
 
@@ -476,13 +464,13 @@ def create_content_diff(module, cmd_before, cmd_after):
 
 
 def command_failed(module, cmd, rc, out, err):
-    """ Command failed. """
+    """Command failed."""
 
     module.fail_json(msg=f"Command failed:\ncmd: {cmd}\nrc: {rc}\nstdout: {out}\nstderr: {err}")
 
 
 def validate_backup_write(module, tmpfile):
-    """ Optionally validate tmpfile and backup path. Write tmpfile to path. """
+    """Optionally validate tmpfile and backup path. Write tmpfile to path."""
 
     global ucl_message
 
@@ -564,7 +552,7 @@ def set_file(module):
 
 
 def run_module():
-    """ Run module """
+    """Run module."""
 
     module_args = dict(
         path=dict(type='path', aliases=['dest', 'file'], required=True),
