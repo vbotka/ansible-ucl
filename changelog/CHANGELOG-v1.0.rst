@@ -5,6 +5,22 @@ vbotka.ansible-ucl 1.0 Release Notes
 .. contents:: Topics
 
 
+1.1.4
+=====
+
+Release Summary
+---------------
+Maintenance update.
+
+Major Changes
+-------------
+
+Minor Changes
+-------------
+* Updated documentation and docstrings.
+* Remove encoding declaration.
+
+
 1.1.3
 =====
 

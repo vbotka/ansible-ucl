@@ -1,6 +1,3 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
-
 # Copyright 2021, Vladimir Botka <vbotka@gmail.com>
 #
 # Redistribution and use in source and binary forms, with or without
