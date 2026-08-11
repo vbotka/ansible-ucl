@@ -5,6 +5,22 @@ vbotka.ansible-ucl 1.0 Release Notes
 .. contents:: Topics
 
 
+1.1.5
+=====
+
+Release Summary
+---------------
+Maintenance update.
+
+Major Changes
+-------------
+
+Minor Changes
+-------------
+* Fix the deprecation warning: Importing 'to_bytes' from
+  'ansible.module_utils._text' is deprecated.
+
+
 1.1.4
 =====
 
