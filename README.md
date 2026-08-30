@@ -89,7 +89,7 @@ See included playbooks, tasks and tests.
 
 ## Test
 
-### Required pacakges
+### Required packages
 
 py311-numpy
 py311-pandas
@@ -101,14 +101,11 @@ See [pandas_filters](https://docs.ansible.com/ansible/latest/dev_guide/developin
 
 ### Download tests
 
-This module is tested with selected set of the
-[uclcmd tests](https://github.com/allanjude/uclcmd/tree/master/tests).
-Download these tests and create both local and remote directories ``tests``
-including
-[Ansible tests](https://github.com/vbotka/ansible-ucl/tree/master/tests.ansible)
+This module is tested with selected set of the [uclcmd tests](https://github.com/allanjude/uclcmd/tree/master/tests).
+Download these tests and create both local and remote directories ``tests`` including [Ansible tests](https://github.com/vbotka/ansible-ucl/tree/master/tests.ansible).
 
 ```sh
-shell> ansible-playbook run-tests.yml -e download_tests=true -e debug=true
+shell> ansible-playbook -e download_tests=true -e debug=true run-tests.yml
 ```
 
 ### In the directory library link the module ucl
@@ -120,7 +117,7 @@ ucl.py -> ../ucl.py
 When the directories ``test`` are created run the play
 
 ```sh
-shell> ansible-playbook tests-ucl.yml -e debug1=true -C
+shell> ansible-playbook -e debug1=true -C tests-ucl.yml
 ```
 
 See NOTES to learn details.
